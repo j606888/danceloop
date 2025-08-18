@@ -1,21 +1,15 @@
 [
     {
-        "name": "IMG_0713.MOV",
-        "uid": "3ba511beb206ae938e95d2d301ac04fe",
-        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/3ba511beb206ae938e95d2d301ac04fe/thumbnails/thumbnail.jpg",
-        "duration": 221
-    },
-    {
-        "name": "IMG_0715.MOV",
-        "uid": "55a0b5fd2fc1f852656d03874d1a137c",
-        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/55a0b5fd2fc1f852656d03874d1a137c/thumbnails/thumbnail.jpg",
-        "duration": 128
-    },
-    {
         "name": "IMG_0712.MOV",
         "uid": "d730e6c098313c30bcd6f33fe2806aed",
         "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/d730e6c098313c30bcd6f33fe2806aed/thumbnails/thumbnail.jpg",
         "duration": 258
+    },
+    {
+        "name": "IMG_0713.MOV",
+        "uid": "3ba511beb206ae938e95d2d301ac04fe",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/3ba511beb206ae938e95d2d301ac04fe/thumbnails/thumbnail.jpg",
+        "duration": 221
     },
     {
         "name": "IMG_0714.MOV",
@@ -24,10 +18,46 @@
         "duration": 163
     },
     {
+        "name": "IMG_0715.MOV",
+        "uid": "55a0b5fd2fc1f852656d03874d1a137c",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/55a0b5fd2fc1f852656d03874d1a137c/thumbnails/thumbnail.jpg",
+        "duration": 128
+    },
+    {
+        "name": "IMG_0716.MOV",
+        "uid": "75d707fafacf6078e9d09e0c5b07b155",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/75d707fafacf6078e9d09e0c5b07b155/thumbnails/thumbnail.jpg",
+        "duration": 195
+    },
+    {
+        "name": "IMG_0717.MOV",
+        "uid": "a35c6ab89c052d5492bb7d8727ea6f21",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/a35c6ab89c052d5492bb7d8727ea6f21/thumbnails/thumbnail.jpg",
+        "duration": 258
+    },
+    {
+        "name": "IMG_0718.MOV",
+        "uid": "c7b1f05d70056d5f226e26c54f1cce92",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/c7b1f05d70056d5f226e26c54f1cce92/thumbnails/thumbnail.jpg",
+        "duration": 334
+    },
+    {
         "name": "IMG_0720.MOV",
         "uid": "b985052dac53c55635423a096aef04e1",
         "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/b985052dac53c55635423a096aef04e1/thumbnails/thumbnail.jpg",
         "duration" : 269
+    },
+    {
+        "name": "IMG_0721.MOV",
+        "uid": "b2827edae88297180c14a754ca00e351",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/b2827edae88297180c14a754ca00e351/thumbnails/thumbnail.jpg",
+        "duration": 250
+    },
+    {
+        "name": "IMG_0722.MOV",
+        "uid": "e8029e225ff6283222fea0f62e427091",
+        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/e8029e225ff6283222fea0f62e427091/thumbnails/thumbnail.jpg",
+        "duration": 148
     },
     {
         "name": "IMG_0723.MOV",
@@ -37,23 +67,9 @@
         "duration": 36
     },
     {
-        "name": "IMG_0721.MOV",
-        "uid": "b2827edae88297180c14a754ca00e351",
-        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/b2827edae88297180c14a754ca00e351/thumbnails/thumbnail.jpg",
-
-        "duration": 250
-    },
-    {
         "name": "IMG_0724.MOV",
         "uid": "b7fe457b0dc8f02f9c3acdf767c0daa9",
         "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/b7fe457b0dc8f02f9c3acdf767c0daa9/thumbnails/thumbnail.jpg",
-
         "duration": 225
-    },
-    {
-        "name": "IMG_0722.MOV",
-        "uid": "e8029e225ff6283222fea0f62e427091",
-        "thumbnail": "https://customer-ae2phsrffw6ivfgf.cloudflarestream.com/e8029e225ff6283222fea0f62e427091/thumbnails/thumbnail.jpg",
-        "duration": 148
     }
 ]
