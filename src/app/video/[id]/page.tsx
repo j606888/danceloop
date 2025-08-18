@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import VideoDetail from "@/features/VideoDetail";
-import videos from "@/lib/videos.json";
+import videos from "@/lib/videos2.json";
 
 const VideoPage = () => {
   const { id } = useParams();

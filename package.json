@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudflare/stream-react": "^1.9.3",
     "date-fns": "^4.1.0",
     "hls.js": "^1.6.10",
     "lucide-react": "^0.539.0",

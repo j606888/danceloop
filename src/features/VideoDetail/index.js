@@ -13,16 +13,20 @@ export default function VideoDetail({ videoUid }) {
       <iframe
         src={`https://${CUSTOMER}/${videoUid}/iframe?autoplay=true`}
         loading="lazy"
-        className="absolute inset-0 w-full h-full border-0"
+        className="absolute inset-0 h-full w-full border-0"
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
-      ></iframe>
+      />
 
       <div
-        className="absolute top-3 left-3 p-2 bg-white rounded-full cursor-pointer z-10"
-        onClick={() => router.back()}
+        className={`absolute left-3 top-3 z-20 opacity-50`}
       >
-        <ChevronLeft className="w-5 h-5" />
+        <button
+          onClick={() => router.push("/")}
+          className="rounded-full bg-white p-2 shadow"
+        >
+          <ChevronLeft className="h-5 w-5 text-black" />
+        </button>
       </div>
     </div>
   );
