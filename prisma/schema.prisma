@@ -13,3 +13,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Video {
+  id          Int          @id @default(autoincrement())
+  uid         String       @unique
+  thumbnail   String
+  duration    Float
+  filename    String
+  preview     String
+  streamCreatedAt DateTime
+  streamModifiedAt DateTime
+  rawData     Json
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
