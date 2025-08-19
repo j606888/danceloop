@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -21,9 +20,13 @@ model Video {
   duration    Float
   filename    String
   preview     String
-  streamCreatedAt DateTime
-  streamModifiedAt DateTime
+  recordedAt  DateTime
   rawData     Json
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+}
+
+model StreamSyncState {
+  id Int @id @default(autoincrement())
+  lastSyncedAt DateTime @default(now())
 }
