@@ -2,14 +2,12 @@
 
 import { useParams } from "next/navigation";
 import VideoDetail from "@/features/VideoDetail";
-import videos from "@/lib/videos2.json";
+import { useGetVideoQuery } from "@/store/slices/videos";
 
 const VideoPage = () => {
-  const { id } = useParams();
+  const { uid } = useParams();
 
-  if (!id) return <div>No video found</div>;
-
-  const video = videos.find((video) => video.uid === id);
+  const { data: video } = useGetVideoQuery(uid as string);
 
   if (!video) return <div>No video found</div>;
 
