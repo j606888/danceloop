@@ -3,15 +3,21 @@ import { useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import { useGetDancersQuery } from "@/store/slices/dancers";
 import { Button } from "@mui/material";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AppsIcon from '@mui/icons-material/Apps';
 
 const DANCE_STYLES = ["Bachata", "Salsa", "Zouk"];
 
 const VideoFilter = ({
   filters,
-  setFilters,
+  setFilters, 
+  viewType,
+  setViewType,
 }: {
   filters: { dancer: string; danceStyle: string };
   setFilters: (filters: { dancer: string; danceStyle: string }) => void;
+  viewType: "list" | "grid";
+  setViewType: (viewType: "list" | "grid") => void;
 }) => {
   const { data: dancers } = useGetDancersQuery();
   const [isOpen, setIsOpen] = useState(false);
@@ -27,16 +33,31 @@ const VideoFilter = ({
   };
 
   return (
-    <div className="fixed bottom-5 left-5 rounded-full bg-gray-400 p-2 flex items-center gap-2 z-10 cursor-pointer">
-      <FilterAltOutlinedIcon
-        onClick={() => setIsOpen(!isOpen)}
-        className="text-white"
-      />
-      {filtersCount > 0 && (
-        <div className="absolute -top-1.5 -right-1.5 text-white text-xs font-bold bg-amber-500 rounded-full w-6 h-6 flex items-center justify-center">
-          {filtersCount}
-        </div>
-      )}
+    <div className="fixed bottom-5 left-5 flex gap-2 items-center z-10">
+      <div className="relative rounded-full bg-gray-400 p-2 flex items-center gap-2  cursor-pointer">
+        <FilterAltOutlinedIcon
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-white"
+        />
+        {filtersCount > 0 && (
+          <div className="absolute -top-1.5 -right-1.5 text-white text-xs font-bold bg-amber-500 rounded-full w-6 h-6 flex items-center justify-center">
+            {filtersCount}
+          </div>
+        )}
+      </div>
+      <div className="rounded-full bg-gray-400 p-2 flex items-center gap-2  cursor-pointer">
+        {viewType === "grid" ? (
+        <FormatListBulletedIcon
+          onClick={() => setViewType("list")}
+          className="text-white"
+        />
+        ) : (
+          <AppsIcon
+            onClick={() => setViewType("grid")}
+            className="text-white"
+          />
+        )}
+      </div>
       <Drawer anchor="bottom" open={isOpen} onClose={() => setIsOpen(false)}>
         <div className="p-4 flex flex-col gap-4">
           <h3 className="text-lg font-bold mb-4">篩選</h3>

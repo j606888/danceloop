@@ -26,7 +26,19 @@ export async function GET(request: Request) {
     orderBy: {
       recordedAt: "desc",
     },
+    include: {
+      dancers: {
+        include: {
+          dancer: true,
+        },
+      },
+    },
   });
 
-  return NextResponse.json({ result: videos });
+  const videosWithDancerNames = videos.map((video) => ({
+    ...video,
+    dancerNames: video.dancers.map((dancer) => dancer.dancer.name),
+  }));
+
+  return NextResponse.json({ result: videosWithDancerNames });
 }
