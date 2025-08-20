@@ -48,8 +48,8 @@ const VideoPreview = ({
           {duration}
         </div>
       </div>
-      <div className="flex flex-col h-full justify-between py-2">
-        <div className="text-base font-bold text-gray-900">
+      <div className="flex flex-col h-full justify-between py-2 gap-1">
+        <div className="text-base text-gray-900">
           {video.filename}
         </div>
         <div className="text-sm text-gray-500">
