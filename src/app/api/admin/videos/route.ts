@@ -3,9 +3,22 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   const videos = await prisma.video.findMany({
+    include: {
+      dancers: {
+        include: {
+          dancer: true,
+        },
+      },
+    },
     orderBy: {
       recordedAt: "desc",
     },
   });
-  return NextResponse.json(videos);
+
+  const videosWithDancerNames = videos.map((video) => ({
+    ...video,
+    dancerNames: video.dancers.map((dancer) => dancer.dancer.name),
+  }));
+
+  return NextResponse.json(videosWithDancerNames);
 }

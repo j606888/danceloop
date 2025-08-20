@@ -21,9 +21,33 @@ model Video {
   filename    String
   preview     String
   recordedAt  DateTime
+  danceStyle  String?
+  recordType  String?
+  location    String?
   rawData     Json
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  dancers VideoDancer[]
+}
+
+model Dancer {
+  id Int @id @default(autoincrement())
+  name String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  videos VideoDancer[]
+}
+
+model VideoDancer {
+  id Int @id @default(autoincrement())
+  videoId Int 
+  dancerId Int
+  video Video @relation(fields: [videoId], references: [id])
+  dancer Dancer @relation(fields: [dancerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([videoId, dancerId])
 }
 
 model StreamSyncState {
