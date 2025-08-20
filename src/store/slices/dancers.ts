@@ -1,16 +1,16 @@
-import { api } from "../../api";
+import { api } from "../api";
 
 export type Dancer = string;
 
-const AdminDancersSlice = api.injectEndpoints({
+const DancersSlice = api.injectEndpoints({
   endpoints: (builder) => ({
     getDancers: builder.query<Dancer[], void>({
       query: () => ({
-        url: "/admin/dancers",
+        url: "/dancers",
         method: "GET",
       }),
     }),
   }),
 }); 
 
-export const { useGetDancersQuery } = AdminDancersSlice;
+export const { useGetDancersQuery } = DancersSlice;

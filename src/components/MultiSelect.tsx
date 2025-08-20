@@ -1,5 +1,5 @@
 import CreatableSelect from "react-select/creatable";
-import { useGetDancersQuery } from "@/store/slices/admin/dancers";
+import { useGetDancersQuery } from "@/store/slices/dancers";
 
 export default function MultiSelect({
   onChange,

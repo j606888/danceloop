@@ -1,18 +1,32 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
-const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
-const CLOUDFLARE_HOST = 'https://api.cloudflare.com'
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const dancerName = searchParams.get("dancer");
+  const danceStyle = searchParams.get("danceStyle");
 
-export async function GET() {
-  const videoUrl = `${CLOUDFLARE_HOST}/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/stream`
-  const response = await fetch(videoUrl, {
-    headers: {
-      "Authorization": `Bearer ${CLOUDFLARE_API_TOKEN}`,
+  // console.log({ dancer, danceStyle });
+
+  let dancerId: number | null = null;
+  if (dancerName) {
+    const dancer = await prisma.dancer.findUnique({
+      where: { name: dancerName },
+    });
+    if (dancer) {
+      dancerId = dancer.id;
+    }
+  }
+
+  const videos = await prisma.video.findMany({
+    where: {
+      ...(dancerId ? { dancers: { some: { dancerId } } } : {}),
+      ...(danceStyle ? { danceStyle } : {}),
+    },
+    orderBy: {
+      recordedAt: "desc",
     },
   });
 
-  const data = await response.json();
-  return NextResponse.json(data);
+  return NextResponse.json({ result: videos });
 }
