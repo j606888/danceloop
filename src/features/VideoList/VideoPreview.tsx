@@ -52,7 +52,7 @@ const VideoPreview = ({
         <div className="text-base text-gray-900">
           {video.filename}
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-400">
           {missingInfo ? (
             "還沒整理"
           ) : (
