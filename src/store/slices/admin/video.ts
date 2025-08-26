@@ -48,6 +48,12 @@ const AdminVideoSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["AdminVideo"],
     }),
+    getUploadLink: builder.query({
+      query: () => ({
+        url: "/admin/videos/upload-link",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -56,4 +62,5 @@ export const {
   useGetVideosQuery,
   useGetVideoQuery,
   useUpdateVideoMutation,
+  useGetUploadLinkQuery,
 } = AdminVideoSlice;
