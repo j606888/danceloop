@@ -6,11 +6,15 @@ type StreamVideo = {
   created: string;
   thumbnail: string;
   preview: string;
+  status: {
+    state: string;
+  }
   meta: {
     filename: string;
-  }
+    name: string;
+  };
   duration: number;
-}
+};
 
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
 const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -22,20 +26,21 @@ export async function POST() {
   const query = lastSyncedAt ? `?start=${lastSyncedAt.toISOString()}` : "";
 
   const videoUrl = `${CLOUDFLARE_HOST}/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/stream${query}`;
-
-  console.log('videoUrl', videoUrl);
   const response = await fetch(videoUrl, {
     headers: {
       Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
     },
   });
 
-
   const data = await response.json();
   const result = data.result || [];
 
-  if (result.length > 0) {
-    await saveVideos(result);
+  const readyVideos = result.filter((video: StreamVideo) =>
+    ["ready", "queued"].includes(video.status.state)
+  );
+
+  if (readyVideos.length > 0) {
+    await saveVideos(readyVideos);
   }
   await updateStreamSyncState();
 
@@ -47,7 +52,7 @@ async function saveVideos(videos: StreamVideo[]) {
     uid: video.uid,
     thumbnail: video.thumbnail,
     duration: video.duration,
-    filename: video.meta.filename,
+    filename: video.meta.filename || video.meta.name,
     preview: video.preview,
     recordedAt: new Date(video.created),
     rawData: JSON.stringify(video),
@@ -64,8 +69,7 @@ async function updateStreamSyncState() {
     await prisma.streamSyncState.create({
       data: { lastSyncedAt: new Date() },
     });
-  }
-  else {
+  } else {
     await prisma.streamSyncState.update({
       where: { id: streamSyncState.id },
       data: { lastSyncedAt: new Date() },
