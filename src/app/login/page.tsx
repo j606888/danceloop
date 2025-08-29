@@ -1,6 +1,28 @@
+"use client";
+
+import { useState } from "react";
+import { useLoginMutation } from "@/store/slices/user";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login] = useLoginMutation();
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await login({ email, password }).unwrap();
+      router.push("/");
+    } catch (error: any) {
+      setError(error?.data?.error);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center gap-1 h-[54px] px-4 mb-8">
@@ -23,7 +45,7 @@ const LoginPage = () => {
           <span>OR</span>
           <div className="border-[#E5E5E5] border-b w-1/2"></div>
         </div>
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
             <label className="text-[#444444] text-sm" htmlFor="email">
               Email
@@ -34,6 +56,8 @@ const LoginPage = () => {
               id="email"
               name="email"
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -46,9 +70,12 @@ const LoginPage = () => {
               id="password"
               name="password"
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2 mb-2">
+          {error && <p className="text-[#BD4545] p-2.5 bg-[#FDEAEA] text-sm">{error}</p>}
+          {/* <div className="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
               id="remember"
@@ -58,14 +85,19 @@ const LoginPage = () => {
             <label htmlFor="remember" className="text-[#444444] text-sm cursor-pointer">
               Remember me
             </label>
-          </div>
+          </div> */}
           <button
-            className="w-full h-[42px] bg-[#6784F6] text-white font-semibold rounded-[10px] cursor-pointer"
+            className="w-full h-[42px] bg-[#6784F6] text-white font-semibold rounded-[10px] cursor-pointer mt-3"
             type="submit"
           >
             Login
           </button>
-          <p className="text-sm text-[#232323] text-center cursor-pointer">Don{`'`}t have an account? <Link href="/signup" className="text-[#6784F6] underline">Sign up</Link></p>
+          <p className="text-sm text-[#232323] text-center cursor-pointer">
+            Don{`'`}t have an account?{" "}
+            <Link href="/signup" className="text-[#6784F6] underline">
+              Sign up
+            </Link>
+          </p>
         </form>
       </div>
     </div>
