@@ -19,7 +19,13 @@ const UserSlice = api.injectEndpoints({
         body: data,
       }),
     }),
+    me: builder.query<any, void>({
+      query: () => ({
+        url: "/me",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation, useLoginMutation } = UserSlice;
+export const { useSignupMutation, useLoginMutation, useMeQuery } = UserSlice;
