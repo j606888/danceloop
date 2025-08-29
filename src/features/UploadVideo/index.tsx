@@ -7,7 +7,8 @@ import DetailState from "./DetailState";
 import { useEffect, useState } from "react";
 
 const UploadVideo = () => {
-  const [currentStep, setCurrentStep] = useState<"Empty" | "Details">("Empty");
+  const [currentStep, setCurrentStep] = useState<"Empty" | "Details">("Details");
+  // const [currentStep, setCurrentStep] = useState<"Empty" | "Details">("Empty");
   const {
     // file,
     // videoURL,

@@ -35,30 +35,6 @@ const UploadVideo = ({
     <>
       <div className="flex flex-col items-center justify-center gap-6 fixed left-0 right-0 bottom-0 top-0">
         <div className="relative w-[100px] h-[100px] flex items-center justify-center bg-[#ECEFFB] rounded-full">
-          <motion.div
-            className="absolute inset-0 rounded-full border border-[#ECEFFB]"
-            style={{ zIndex: 0, background: "none" }}
-            animate={{ scale: [1, 2], opacity: [0.6, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeOut",
-              delay: 0,
-            }}
-          />
-          <motion.div
-            className="absolute inset-0 rounded-full border border-[#ECEFFB]"
-            style={{ zIndex: 0, background: "none" }}
-            animate={{ scale: [1, 2.4], opacity: [0.4, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeOut",
-              delay: 0.5,
-            }}
-          />
           <CloudUpload className="text-[#6784F6] w-10 h-10" />
         </div>
         <div className="flex flex-col items-center justify-center gap-1 px-8 text-center">

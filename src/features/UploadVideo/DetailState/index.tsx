@@ -1,5 +1,6 @@
 import RadioGroup from "@/components/RadioGroup";
 import UploadToast from "@/components/UploadToast";
+import SearchDancer from "./SearchDancer";
 
 const DetailState = ({
   uploadSuccess,
@@ -18,38 +19,28 @@ const DetailState = ({
       <form className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <label
-            className="text-[#444444] text-sm font-medium"
+            className="text-[#444444] font-medium"
             htmlFor="videoTitle"
           >
             Video Title
           </label>
           <input
             type="text"
-            className="p-3 rounded-[12px] bg-white text-sm outline-[#6784F6]"
+            className="p-3 py-4 rounded-[12px] bg-white outline-[#6784F6]"
             placeholder="Bachata Lv2 / Lesson 3 / Head movement"
           />
         </div>
+        <SearchDancer />
         <div className="flex flex-col gap-1">
           <label
-            className="text-[#444444] text-sm font-medium"
-            htmlFor="Dancers"
-          >
-            Dancers
-          </label>
-          <div className="flex items-center gap-2 h-[48px] px-3 bg-white rounded-[12px]">
-            <span className="text-[#999999] text-sm">Add more</span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label
-            className="text-[#444444] text-sm font-medium"
+            className="text-[#444444] font-medium"
             htmlFor="RecordAt"
           >
             Record at
           </label>
           <input
             type="text"
-            className="p-3 rounded-[12px] bg-white text-sm outline-[#6784F6]"
+            className="p-3 py-4 rounded-[12px] bg-white outline-[#6784F6]"
             placeholder="2025-08-17 16:34"
           />
         </div>
@@ -63,14 +54,14 @@ const DetailState = ({
         />
         <div className="flex flex-col gap-1">
           <label
-            className="text-[#444444] text-sm font-medium"
+            className="text-[#444444] font-medium"
             htmlFor="Location"
           >
             Location (Optional)
           </label>
           <input
             type="text"
-            className="p-3 rounded-[12px] bg-white text-sm outline-[#6784F6]"
+            className="p-3 rounded-[12px] bg-white outline-[#6784F6]"
             placeholder="Social Hub"
           />
         </div>

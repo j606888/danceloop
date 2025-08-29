@@ -35,7 +35,7 @@ const MENU_ITEMS = [
   },
 ];
 
-const Sidrbar = () => {
+const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -91,4 +91,4 @@ const Sidrbar = () => {
   );
 };
 
-export default Sidrbar;
+export default Sidebar;
