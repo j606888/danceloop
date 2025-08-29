@@ -36,11 +36,26 @@ const UploadToast = ({ uploadProgress, uploadSuccess }: { uploadProgress: number
     }
   }, [uploadProgress, uploadSuccess, step]);
 
+
+  // useEffect(() => {
+  //   if (progress > 100 && step === 1) {
+  //     setStep(2);
+  //     setTimeout(() => setStep(3), 5000);
+  //     setTimeout(() => setStep(4), 10000);
+  //   }
+  // }, [progress, step]);
+
   return (
     <AnimatePresence>
       {step !== 4 && (
-        <div
-          className="flex p-4 bg-[#FFFBF4] rounded-full shadow-[2px_2px_12px_0px_rgba(239,194,47,0.50)]"
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 100 }}
+          transition={{ duration: 1 }}
+          // layout animates height if your content height differs per step
+          layout
+          className="fixed bottom-5 left-5 right-5 z-50 flex p-4 bg-[#FFFBF4] rounded-full shadow-[2px_2px_12px_0px_rgba(239,194,47,0.50)] transform-gpu"
         >
           <div className="flex items-center gap-5 w-full">
             {/* Inner step switch with float up/down effect */}
@@ -86,6 +101,7 @@ const UploadToast = ({ uploadProgress, uploadSuccess }: { uploadProgress: number
                       </p>
                     </>
                   )}
+
                   {(step === 3 || step === 4) && (
                     <>
                       <p className="text-xs font-semibold text-[#B48E14]">
@@ -100,7 +116,7 @@ const UploadToast = ({ uploadProgress, uploadSuccess }: { uploadProgress: number
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
