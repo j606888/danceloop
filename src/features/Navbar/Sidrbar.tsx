@@ -51,7 +51,6 @@ const Sidrbar = () => {
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
             ></motion.div>
-
             <motion.div
               className="fixed top-0 bottom-0 left-0 z-50 rounded-r-2xl bg-white shadow-xl p-4 w-75 flex flex-col"
               initial={{ x: "-100%" }}
@@ -63,10 +62,12 @@ const Sidrbar = () => {
                 <img src="/icons/Logo.svg" alt="Logo" />
                 <h4 className="text-xl font-bold tracking-tight">DanceLoop</h4>
               </div>
-              <div className="flex items-center justify-center align-center gap-2 py-3 border-1 text-[#6784F6] border-[#6784F6] rounded-full font-medium">
-                <CloudUpload />
-                <span>Upload Video</span>
-              </div>
+              <Link href="/upload-video">
+                <div className="flex items-center justify-center align-center gap-2 py-3 border-1 text-[#6784F6] border-[#6784F6] rounded-full font-medium">
+                  <CloudUpload />
+                  <span>Upload Video</span>
+                </div>
+              </Link>
               <div className="border-b border-[#eeeeee] my-4"></div>
               <div className="flex flex-col gap-2">
                 {MENU_ITEMS.map((item) => (
