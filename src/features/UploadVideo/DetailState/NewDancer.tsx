@@ -1,10 +1,21 @@
 import { Venus, Mars } from "lucide-react";
 import { useState } from "react";
+import { useCreateDancerMutation } from "@/store/slices/dancers";
 
-const NewDancer = () => {
+const NewDancer = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState<string>("");
   const [gender, setGender] = useState<string | null>(null);
   const [isTeacher, setIsTeacher] = useState(false);
+  const [createDancer] = useCreateDancerMutation();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (!name || !gender) return;
+
+    await createDancer({ name, gender, isTeacher });
+    onClose();
+  };
 
   return (
     <div className="flex flex-col gap-3 border-1 border-[#E5E5E5] rounded-[4px] p-3 mb-4">
@@ -59,10 +70,17 @@ const NewDancer = () => {
         </label>
       </div>
       <div className="flex gap-2 justify-end">
-        <button className=" text-[#6784F6] border-1 border-[#6784F6] rounded-[10px] px-4 py-2">
+        <button
+          className=" text-[#6784F6] border-1 border-[#6784F6] rounded-[10px] px-4 py-2"
+          onClick={onClose}
+        >
           Cancel
         </button>
-        <button className="bg-[#6784F6] text-white rounded-[10px] px-4 py-2">
+        <button
+          className="bg-[#6784F6] text-white rounded-[10px] px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!name || !gender}
+          onClick={handleSubmit}
+        >
           Create
         </button>
       </div>

@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const TAG_TYPES = [
   "AdminVideo",
+  "Dancers",
 ]
 
 export const api = createApi({

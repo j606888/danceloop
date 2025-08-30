@@ -1,6 +1,13 @@
 import { api } from "../api";
 
-export type Dancer = string;
+export type Dancer = {
+  id: number;
+  name: string;
+  gender: string;
+  isTeacher: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
 
 const DancersSlice = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,8 +16,20 @@ const DancersSlice = api.injectEndpoints({
         url: "/dancers",
         method: "GET",
       }),
+      providesTags: ["Dancers"],
+    }),
+    createDancer: builder.mutation<
+      Dancer,
+      { name: string; gender: string; isTeacher: boolean }
+    >({
+      query: (data) => ({
+        url: "/dancers",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Dancers"],
     }),
   }),
-}); 
+});
 
-export const { useGetDancersQuery } = DancersSlice;
+export const { useGetDancersQuery, useCreateDancerMutation } = DancersSlice;

@@ -33,6 +33,8 @@ model Video {
 model Dancer {
   id Int @id @default(autoincrement())
   name String @unique
+  gender String @default("male")
+  isTeacher Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   videos VideoDancer[]
