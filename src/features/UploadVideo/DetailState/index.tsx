@@ -1,6 +1,7 @@
 import RadioGroup from "@/components/RadioGroup";
 import UploadToast from "@/components/UploadToast";
-import SearchDancer from "./SearchDancer";
+import DancersInput from "./DancersInput";
+import { useState } from "react";
 
 const DetailState = ({
   uploadSuccess,
@@ -9,6 +10,8 @@ const DetailState = ({
   uploadSuccess: boolean;
   uploadProgress: number;
 }) => {
+  const [dancerIds, setDancerIds] = useState<number[]>([]);
+
   return (
     <div className="px-5 py-5 bg-[#F0F1F6]">
       <UploadToast
@@ -16,7 +19,7 @@ const DetailState = ({
         uploadSuccess={uploadSuccess}
       />
       <h2 className="font-bold py-4">Video Details</h2>
-      <form className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <label
             className="text-[#444444] font-medium"
@@ -30,7 +33,10 @@ const DetailState = ({
             placeholder="Bachata Lv2 / Lesson 3 / Head movement"
           />
         </div>
-        <SearchDancer />
+        <DancersInput
+          dancerIds={dancerIds}
+          setDancerIds={setDancerIds}
+        />
         <div className="flex flex-col gap-1">
           <label
             className="text-[#444444] font-medium"
@@ -69,7 +75,7 @@ const DetailState = ({
         <button className="bg-[#6784F6] text-white p-3 rounded-[12px] font-medium">
           Submit
         </button>
-      </form>
+      </div>
     </div>
   );
 };
