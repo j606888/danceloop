@@ -1,0 +1,13 @@
+-- CreateEnum
+CREATE TYPE "public"."VideoState" AS ENUM ('DRAFT', 'UPLOADING', 'PROCESSING', 'READY', 'FAILED', 'ABANDONED');
+
+-- AlterTable
+ALTER TABLE "public"."Video" ADD COLUMN     "state" "public"."VideoState" NOT NULL DEFAULT 'DRAFT',
+ADD COLUMN     "title" TEXT,
+ALTER COLUMN "uid" DROP NOT NULL,
+ALTER COLUMN "thumbnail" DROP NOT NULL,
+ALTER COLUMN "duration" DROP NOT NULL,
+ALTER COLUMN "filename" DROP NOT NULL,
+ALTER COLUMN "preview" DROP NOT NULL,
+ALTER COLUMN "rawData" DROP NOT NULL,
+ALTER COLUMN "recordedAt" DROP NOT NULL;

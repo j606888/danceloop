@@ -26,14 +26,14 @@ const AdminVideoSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["AdminVideo"],
     }),
-    getVideos: builder.query({
+    getAdminVideos: builder.query({
       query: () => ({
         url: "/admin/videos",
         method: "GET",
       }),
       providesTags: ["AdminVideo"],
     }),
-    getVideo: builder.query<Video, string>({
+    getAdminVideo: builder.query<Video, string>({
       query: (id) => ({
         url: `/admin/videos/${id}`,
         method: "GET",
@@ -48,7 +48,7 @@ const AdminVideoSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["AdminVideo"],
     }),
-    getUploadLink: builder.mutation({
+    getAdminUploadLink: builder.mutation({
       query: () => ({
         url: "/admin/videos/upload-link",
         method: "POST",
@@ -59,8 +59,8 @@ const AdminVideoSlice = api.injectEndpoints({
 
 export const {
   useSyncVideosMutation,
-  useGetVideosQuery,
-  useGetVideoQuery,
+  useGetAdminVideosQuery,
+  useGetAdminVideoQuery,
   useUpdateVideoMutation,
-  useGetUploadLinkMutation,
+  useGetAdminUploadLinkMutation,
 } = AdminVideoSlice;

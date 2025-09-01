@@ -4,6 +4,20 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+enum VideoState {
+  DRAFT
+  UPLOADING
+  PROCESSING
+  READY
+  FAILED
+  ABANDONED
+}
+
+enum VideoVisibility {
+  PRIVATE
+  PUBLIC
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,16 +29,21 @@ datasource db {
 
 model Video {
   id          Int          @id @default(autoincrement())
-  uid         String       @unique
-  thumbnail   String
-  duration    Float
-  filename    String
-  preview     String
-  recordedAt  DateTime
+  userId      Int?
+  user User? @relation(fields: [userId], references: [id])
+  uid         String?       @unique
+  title       String?
+  thumbnail   String?
+  duration    Float?
+  filename    String?
+  preview     String?
+  recordedAt  DateTime?
   danceStyle  String?
   recordType  String?
   location    String?
-  rawData     Json
+  visibility  String?
+  rawData     Json?
+  state       VideoState   @default(DRAFT)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   dancers VideoDancer[]
@@ -33,6 +52,8 @@ model Video {
 model Dancer {
   id Int @id @default(autoincrement())
   name String @unique
+  gender String @default("male")
+  isTeacher Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   videos VideoDancer[]
@@ -53,4 +74,14 @@ model VideoDancer {
 model StreamSyncState {
   id Int @id @default(autoincrement())
   lastSyncedAt DateTime @default(now())
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  encryptedPassword String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  videos Video[]
 }

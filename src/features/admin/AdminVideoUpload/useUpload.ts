@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useGetUploadLinkMutation } from "@/store/slices/admin/video";
+import { useGetAdminUploadLinkMutation } from "@/store/slices/admin/video";
 
 function useUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [videoURL, setVideoURL] = useState<string | null>(null);
-  const [getUploadLink] = useGetUploadLinkMutation();
+  const [getUploadLink] = useGetAdminUploadLinkMutation();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
