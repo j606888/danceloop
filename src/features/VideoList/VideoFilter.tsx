@@ -66,15 +66,15 @@ const VideoFilter = ({
             <div className="flex flex-wrap gap-3">
               {dancers?.map((dancer) => (
                 <div
-                  key={dancer}
+                  key={dancer.name}
                   className={`px-3 py-1.5 rounded-md  cursor-pointer ${
-                    filters.dancer === dancer
+                    filters.dancer === dancer.name
                       ? "bg-amber-600 text-white"
                       : "border border-gray-200"
                   }`}
-                  onClick={() => handleDancerClick(dancer)}
+                  onClick={() => handleDancerClick(dancer.name)}
                 >
-                  {dancer}
+                  {dancer.name}
                 </div>
               ))}
             </div>

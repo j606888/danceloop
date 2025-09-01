@@ -29,7 +29,7 @@ export default function MultiSelect({
         }))}
         isMulti
         name="dancers"
-        options={dancers?.map((dancer) => ({ value: dancer, label: dancer }))}
+        options={dancers?.map((dancer) => ({ value: dancer.name, label: dancer.name }))}
         className="basic-multi-select"
         classNamePrefix="select"
         menuPortalTarget={typeof window !== "undefined" ? document.body : null}
