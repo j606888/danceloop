@@ -11,7 +11,7 @@ const DetailState = ({
   uploadSuccess,
   uploadProgress,
 }: {
-  videoUid: number;
+  videoUid: string;
   uploadSuccess: boolean;
   uploadProgress: number;
 }) => {
@@ -36,7 +36,7 @@ const DetailState = ({
         data: { title, dancerIds, recordedAt, danceStyle, recordType, location, visibility },
       }).unwrap()
 
-      router.push("/video-management")
+      router.push("/video/management")
     } catch(error) {
       console.error(error)
     }

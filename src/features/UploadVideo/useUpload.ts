@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useGetUploadLinkMutation, useUpdateVideoStateMutation } from "@/store/slices/videos";
 
 function useUpload() {
-  const [videoUid, setVideoUid] = useState<number | null>(null);
+  const [videoUid, setVideoUid] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [videoURL, setVideoURL] = useState<string | null>(null);
   const [getUploadLink] = useGetUploadLinkMutation();

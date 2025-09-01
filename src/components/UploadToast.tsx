@@ -4,7 +4,10 @@ import { DotLoader, HashLoader, SkewLoader } from "react-spinners";
 import ProgressBar from "@/components/ProgressBar";
 import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSyncVideoMutation } from "@/store/slices/videos";
+import {
+  useSyncVideoMutation,
+  useUpdateVideoStateMutation,
+} from "@/store/slices/videos";
 
 const contentVariants = {
   initial: { opacity: 0, y: 12 },
@@ -31,38 +34,39 @@ const UploadToast = ({
   uploadProgress,
   uploadSuccess,
 }: {
-  videoUid: number;
+  videoUid: string;
   uploadProgress: number;
   uploadSuccess: boolean;
 }) => {
   const [step, setStep] = useState(1);
-  const [needSync, setNeedSync] = useState(true)
-  const [syncVideo] = useSyncVideoMutation()
+  const [needSync, setNeedSync] = useState(true);
+  const [syncVideo] = useSyncVideoMutation();
+  const [updateVideoState] = useUpdateVideoStateMutation();
 
   const handleSyncVideo = useCallback(async () => {
-    const { ready } = await syncVideo({ uid: videoUid }).unwrap()
+    const { ready } = await syncVideo({ uid: videoUid }).unwrap();
     if (ready) {
-      setNeedSync(false)
-      setStep(3)
+      setNeedSync(false);
+      setStep(3);
     }
-  }, [syncVideo, videoUid])
+  }, [syncVideo, videoUid]);
 
   useEffect(() => {
     if (uploadProgress === 100 && uploadSuccess && step === 1) {
       setStep(2);
+      updateVideoState({ uid: videoUid, state: "PROCESSING" });
     }
-  }, [uploadProgress, uploadSuccess, step]);
+  }, [uploadProgress, uploadSuccess, step, updateVideoState, videoUid]);
 
   useEffect(() => {
-    if (!needSync) return
+    if (!needSync) return;
 
     const timeout = setInterval(() => {
-      handleSyncVideo()
-    }, 5000)
+      handleSyncVideo();
+    }, 5000);
 
-    return () => clearInterval(timeout)
-
-  }, [needSync, syncVideo, handleSyncVideo])
+    return () => clearInterval(timeout);
+  }, [needSync, syncVideo, handleSyncVideo]);
 
   return (
     <AnimatePresence>

@@ -2,25 +2,27 @@ import { X, Mars, Venus } from "lucide-react";
 import { Dancer } from "@/store/slices/dancers";
 
 export const DancerBadge = ({
+  size = 'base',
   dancer,
   onRemove,
 }: {
   dancer: Dancer;
+  size?: 'base' | 'sm';
   onRemove?: (dancerId: number) => void;
 }) => {
   return (
     <div
-      className={`flex gap-1.5 justify-center items-center px-2 h-[32px] rounded-full ${
+      className={`flex gap-1.5 justify-center items-center px-2 ${size === 'sm' ? 'h-[28px]' : 'h-[32px]'} rounded-full ${
         dancer.gender === "male" ? "bg-[#6784F6]/10" : "bg-[#DD886F]/10"
       }`}
     >
       {dancer.gender === "male" ? (
-        <Mars className="w-4 h-4 text-[#6784F6]" />
+        <Mars className={`${size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} text-[#6784F6]`} />
       ) : (
-        <Venus className="w-4 h-4 text-[#DD886F]" />
+        <Venus className={`${size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} text-[#DD886F]`} />
       )}
       <span
-        className={`text-sm font-semibold whitespace-nowrap ${
+        className={`${size === 'base' ? 'text-sm' : 'text-xs'} font-semibold whitespace-nowrap ${
           dancer.gender === "male" ? "text-[#6784F6]" : "text-[#DD886F]"
         }`}
       >

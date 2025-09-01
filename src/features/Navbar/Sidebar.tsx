@@ -21,7 +21,7 @@ const MENU_ITEMS = [
   {
     icon: SquarePlay,
     label: "My videos",
-    href: "/video-management",
+    href: "/video/management",
   },
   {
     icon: Heart,

@@ -1,9 +1,11 @@
 import { api } from "../api";
+import { Dancer } from "./dancers";
 
 export type Video = {
   id: number;
   uid: string;
   title: string;
+  state: string;
   thumbnail: string;
   duration: number;
   filename: string;
@@ -16,6 +18,7 @@ export type Video = {
   rawData: string;
   createdAt: string;
   updatedAt: string;
+  dancers: Dancer[];
 };
 
 const videoSlice = api.injectEndpoints({
