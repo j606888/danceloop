@@ -6,8 +6,6 @@ export async function GET(request: Request) {
   const dancerName = searchParams.get("dancer");
   const danceStyle = searchParams.get("danceStyle");
 
-  // console.log({ dancer, danceStyle });
-
   let dancerId: number | null = null;
   if (dancerName) {
     const dancer = await prisma.dancer.findUnique({

@@ -3,11 +3,15 @@ import RadioGroup from "@/components/RadioGroup";
 import UploadToast from "@/components/UploadToast";
 import DancersInput from "./DancersInput";
 import { Calendar, Clock } from "lucide-react";
+import { useUpdateVideoMutation } from "@/store/slices/videos";
+import { useRouter } from "next/navigation";
 
 const DetailState = ({
+  videoUid,
   uploadSuccess,
   uploadProgress,
 }: {
+  videoUid: number;
   uploadSuccess: boolean;
   uploadProgress: number;
 }) => {
@@ -18,20 +22,30 @@ const DetailState = ({
   const [recordedDate, setRecordedDate] = useState<string>("");
   const [recordedTime, setRecordedTime] = useState<string>("");
   const [danceStyle, setDanceStyle] = useState<string>("");
-  const [danceType, setDanceType] = useState<string>("");
+  const [recordType, setRecordType] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [visibility, setVisibility] = useState<string>("");
   const recordedAt = useMemo(() => combineLocalToISOString(recordedDate, recordedTime), [recordedDate, recordedTime]);
+  const [updateVideo] = useUpdateVideoMutation();
+  const router = useRouter();
 
-  console.log({
-    recordedAt,
-    recordedDate,
-    recordedTime,
-  })
+  const handleSubmit = async () => {
+    try {
+      await updateVideo({
+        uid: videoUid,
+        data: { title, dancerIds, recordedAt, danceStyle, recordType, location, visibility },
+      }).unwrap()
+
+      router.push("/video-management")
+    } catch(error) {
+      console.error(error)
+    }
+  };
 
   return (
     <div className="px-5 py-5 bg-[#F0F1F6]">
       <UploadToast
+        videoUid={videoUid}
         uploadProgress={uploadProgress}
         uploadSuccess={uploadSuccess}
       />
@@ -96,8 +110,8 @@ const DetailState = ({
         <RadioGroup
           label="Dance Type"
           options={["Party", "Course", "Workshop", "Other"]}
-          value={danceType}
-          onChange={(value) => setDanceType(value)}
+          value={recordType}
+          onChange={(value) => setRecordType(value)}
         />
         <div className="flex flex-col gap-1">
           <label className="text-[#444444] font-medium" htmlFor="Location">
@@ -112,7 +126,7 @@ const DetailState = ({
           />
         </div>
         <RadioGroup label="Visibility" options={["Public", "Private"]} value={visibility} onChange={(value) => setVisibility(value)} />
-        <button className="bg-[#6784F6] text-white p-3 rounded-[12px] font-medium">
+        <button className="bg-[#6784F6] text-white p-3 rounded-[12px] font-medium" onClick={handleSubmit}>
           Submit
         </button>
       </div>
@@ -122,7 +136,7 @@ const DetailState = ({
 
 
 function combineLocalToISOString(dateStr: string, timeStr: string) {
-  if (!dateStr || !timeStr) return null;
+  if (!dateStr || !timeStr) return '';
 
   const [y, m, d] = dateStr.split("-").map(Number);
   const [hh, mm] = timeStr.split(":").map(Number);

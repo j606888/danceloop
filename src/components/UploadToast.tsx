@@ -2,33 +2,50 @@
 
 import { DotLoader, HashLoader, SkewLoader } from "react-spinners";
 import ProgressBar from "@/components/ProgressBar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSyncVideoMutation } from "@/store/slices/videos";
 
 const contentVariants = {
-  initial: { opacity: 0, y: 12 /*, filter: "blur(2px)" */ },
+  initial: { opacity: 0, y: 12 },
   animate: {
     opacity: 1,
-    // float up slightly past target, then settle down
     y: [12, -2, 0],
     transition: { duration: 0.42 },
   },
   exit: {
     opacity: 0,
-    y: -12, // float up and out
+    y: -12,
     transition: { duration: 0.25 },
   },
 };
 
-// Optional: stagger inner bits (icon then text)
 const groupVariants = {
   animate: {
     transition: { staggerChildren: 0.06, delayChildren: 0.05 },
   },
 };
 
-const UploadToast = ({ uploadProgress, uploadSuccess }: { uploadProgress: number, uploadSuccess: boolean }) => {
+const UploadToast = ({
+  videoUid,
+  uploadProgress,
+  uploadSuccess,
+}: {
+  videoUid: number;
+  uploadProgress: number;
+  uploadSuccess: boolean;
+}) => {
   const [step, setStep] = useState(1);
+  const [needSync, setNeedSync] = useState(true)
+  const [syncVideo] = useSyncVideoMutation()
+
+  const handleSyncVideo = useCallback(async () => {
+    const { ready } = await syncVideo({ uid: videoUid }).unwrap()
+    if (ready) {
+      setNeedSync(false)
+      setStep(3)
+    }
+  }, [syncVideo, videoUid])
 
   useEffect(() => {
     if (uploadProgress === 100 && uploadSuccess && step === 1) {
@@ -36,12 +53,21 @@ const UploadToast = ({ uploadProgress, uploadSuccess }: { uploadProgress: number
     }
   }, [uploadProgress, uploadSuccess, step]);
 
+  useEffect(() => {
+    if (!needSync) return
+
+    const timeout = setInterval(() => {
+      handleSyncVideo()
+    }, 5000)
+
+    return () => clearInterval(timeout)
+
+  }, [needSync, syncVideo, handleSyncVideo])
+
   return (
     <AnimatePresence>
       {step !== 4 && (
-        <div
-          className="flex p-4 bg-[#FFFBF4] rounded-full shadow-[2px_2px_12px_0px_rgba(239,194,47,0.50)]"
-        >
+        <div className="flex p-4 bg-[#FFFBF4] rounded-full shadow-[2px_2px_12px_0px_rgba(239,194,47,0.50)]">
           <div className="flex items-center gap-5 w-full">
             {/* Inner step switch with float up/down effect */}
             <AnimatePresence mode="wait" initial={false}>
@@ -54,7 +80,10 @@ const UploadToast = ({ uploadProgress, uploadSuccess }: { uploadProgress: number
                 className="flex items-center gap-5 w-full"
               >
                 {/* ICON */}
-                <motion.div variants={contentVariants} className="w-8 flex-1 flex items-center justify-center">
+                <motion.div
+                  variants={contentVariants}
+                  className="w-8 flex-1 flex items-center justify-center"
+                >
                   {step === 1 && <DotLoader color="#EFC22F" size={32} />}
                   {step === 2 && <HashLoader color="#EFC22F" size={30} />}
                   {(step === 3 || step === 4) && (

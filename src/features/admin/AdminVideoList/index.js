@@ -1,14 +1,14 @@
 import { Button } from "@mui/material";
 import {
   useSyncVideosMutation,
-  useGetVideosQuery,
+  useGetAdminVideosQuery,
 } from "@/store/slices/admin/video";
 import VideoRow from "./VideoRow";
 import RowHeader from "./RowHeader";
 
 const AdminVideoList = () => {
   const [syncVideos, { isLoading }] = useSyncVideosMutation();
-  const { data: videos, isLoading: isVideosLoading } = useGetVideosQuery();
+  const { data: videos, isLoading: isVideosLoading } = useGetAdminVideosQuery();
 
   const handleSyncVideos = () => {
     syncVideos();

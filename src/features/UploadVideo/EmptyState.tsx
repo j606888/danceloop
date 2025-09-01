@@ -1,7 +1,6 @@
 "use client";
 
 import { CloudUpload } from "lucide-react";
-import { motion } from "framer-motion";
 import { useDropzone } from "react-dropzone";
 import { PulseLoader } from "react-spinners";
 import { useState, useEffect } from "react";
@@ -35,7 +34,8 @@ const UploadVideo = ({
     <>
       <div className="flex flex-col items-center justify-center gap-6 fixed left-0 right-0 bottom-0 top-0">
         <div className="relative w-[100px] h-[100px] flex items-center justify-center bg-[#ECEFFB] rounded-full">
-          <CloudUpload className="text-[#6784F6] w-10 h-10" />
+          <div className="absolute w-full h-full flex items-center justify-center bg-[#ECEFFB] rounded-full animate-ping opacity-75"></div>
+          <CloudUpload className="text-[#6784F6] w-10 h-10 z-10" />
         </div>
         <div className="flex flex-col items-center justify-center gap-1 px-8 text-center">
           <h3 className="font-medium text-[#232323]">

@@ -7,9 +7,9 @@ import DetailState from "./DetailState";
 import { useEffect, useState } from "react";
 
 const UploadVideo = () => {
-  const [currentStep, setCurrentStep] = useState<"Empty" | "Details">("Details");
-  // const [currentStep, setCurrentStep] = useState<"Empty" | "Details">("Empty");
+  const [currentStep, setCurrentStep] = useState<"Empty" | "Details">("Empty");
   const {
+    videoUid,
     // file,
     // videoURL,
     uploading,
@@ -31,8 +31,9 @@ const UploadVideo = () => {
       {currentStep === "Empty" && (
         <EmptyState onDrop={onDrop} uploadError={uploadError} />
       )}
-      {currentStep === "Details" && (
+      {currentStep === "Details" && videoUid && (
         <DetailState
+          videoUid={videoUid}
           uploadSuccess={uploadSuccess}
           uploadProgress={uploadProgress}
         />

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  useGetVideoQuery,
+  useGetAdminVideoQuery,
   useUpdateVideoMutation,
 } from "@/store/slices/admin/video";
 import { TextField, Button } from "@mui/material";
@@ -20,7 +20,7 @@ const LOCATIONS = ["沙野", "台南文創園區", "Salsa 6", "Social Hub", "Ban
 const AdminVideoEdit = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { data: video } = useGetVideoQuery(id);
+  const { data: video } = useGetAdminVideoQuery(id);
   const [updateVideo] = useUpdateVideoMutation();
   const [filename, setFilename] = useState("");
   const [danceStyle, setDanceStyle] = useState("");
