@@ -1,13 +1,15 @@
-import { useState } from "react";
 
 const RadioGroup = ({
   label,
   options,
+  value,
+  onChange,
 }: {
   label: string;
   options: string[];
+  value: string;
+  onChange: (value: string) => void;
 }) => {
-  const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <div>
@@ -19,14 +21,14 @@ const RadioGroup = ({
           <div
             key={option}
             className="flex items-center gap-2"
-            onClick={() => setSelected(option)}
+            onClick={() => onChange(option)}
           >
             <div
-              className={`flex items-center justify-center w-4 h-4 rounded-full bg-white ${
-                selected === option ? "border-1 border-[#6784F6]" : "bg-white"
+              className={`flex items-center justify-center w-4.5 h-4.5 bg-white rounded-full ${
+                value === option ? "border-2 border-[#6784F6]" : ""
               }`}
             >
-              {selected === option && <div className="w-2.5 h-2.5 rounded-full bg-[#6784F6]" />}
+              {value === option && <div className="w-2.5 h-2.5 rounded-full bg-[#6784F6]" />}
             </div>
             <span className="text-base">{option}</span>
           </div>

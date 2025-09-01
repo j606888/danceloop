@@ -10,3 +10,22 @@ body {
   color: var(--foreground);
   font-family: var(--font-roboto);
 }
+
+input[type="time"], input[type="date"] {
+  -webkit-appearance: none; /* Remove native WebKit styles */
+  -moz-appearance: textfield;
+  appearance: none;
+
+  font-size: 16px;   /* Avoid zoom on focus */
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;     /* Chrome/Edge/Safari (desktop) */
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+
+  display: none;     /* Chrome/Edge/Safari (desktop) */
+}
