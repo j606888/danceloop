@@ -11,9 +11,11 @@ import SearchDancer from "./SearchDancer";
 const DancersInput = ({
   dancerIds,
   setDancerIds,
+  border = false,
 }: {
   dancerIds: number[];
   setDancerIds: (dancerIds: number[]) => void;
+  border?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const [showNewDancer, setShowNewDancer] = useState(false);
@@ -38,7 +40,7 @@ const DancersInput = ({
           Dancers
         </label>
         <div
-          className="flex flex-wrap items-center gap-2 p-2 bg-white rounded-[12px] min-h-[48px]"
+          className={`flex flex-wrap items-center gap-2 p-2 bg-white  min-h-[48px] ${border ? 'border-1 border-[#E5E5E5] rounded-[4px]' : 'rounded-[12px]'}`}
           onClick={() => setOpen(true)}
         >
           {selectedDancers?.map((dancer) => (

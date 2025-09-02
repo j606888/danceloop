@@ -6,8 +6,10 @@ import { PulseLoader } from "react-spinners";
 
 const VideoList = () => {
   const [filters, setFilters] = useState({
-    dancer: "",
+    title: "",
+    dancerIds: [],
     danceStyle: "",
+    recordType: "",
   });
   const { data: videos, isLoading } = useGetVideosQuery(filters);
   const [viewType, setViewType] = useState("grid");
@@ -21,23 +23,25 @@ const VideoList = () => {
   }
 
   return (
-    <div
-      className={`relative ${
-        viewType === "grid"
-          ? "grid grid-cols-3 gap-[3px]"
-          : "flex flex-col gap-2 py-1"
-      }`}
-    >
-      {videos?.result?.map((video) => (
-        <VideoPreview key={video.uid} video={video} viewType={viewType} />
-      ))}
+    <>
       <VideoFilter
         filters={filters}
         setFilters={setFilters}
         viewType={viewType}
         setViewType={setViewType}
       />
-    </div>
+      <div
+        className={`relative ${
+          viewType === "grid"
+            ? "grid grid-cols-3 gap-[3px]"
+            : "flex flex-col gap-2 py-1"
+        }`}
+      >
+        {videos?.result?.map((video) => (
+          <VideoPreview key={video.uid} video={video} viewType={viewType} />
+        ))}
+      </div>
+    </>
   );
 };
 

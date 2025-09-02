@@ -23,20 +23,30 @@ export type Video = {
 
 const videoSlice = api.injectEndpoints({
   endpoints: (builder) => ({
-    getVideos: builder.query<Video[], { dancer: string; danceStyle: string }>({
+    getVideos: builder.query<Video[], { title: string; dancerIds: number[]; danceStyle: string; recordType: string }>({
       query: ({
-        dancer,
+        title,
+        dancerIds,
         danceStyle,
+        recordType,
       }: {
-        dancer?: string;
-        danceStyle?: string;
+        title: string;
+        dancerIds: number[];
+        danceStyle: string;
+        recordType: string;
       }) => {
         const query = new URLSearchParams();
-        if (dancer) {
-          query.set("dancer", dancer);
+        if (title) {
+          query.set("title", title);
+        }
+        if (dancerIds.length > 0) {
+          query.set("dancerIds", dancerIds.join(","));
         }
         if (danceStyle) {
           query.set("danceStyle", danceStyle);
+        }
+        if (recordType) {
+          query.set("recordType", recordType);
         }
         return {
           url: `/videos?${query.toString()}`,

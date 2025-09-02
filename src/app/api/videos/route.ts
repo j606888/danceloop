@@ -1,26 +1,26 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const dancerName = searchParams.get("dancer");
+  const title = searchParams.get("title");
+  const dancerIds = searchParams.get("dancerIds")?.split(",") || [];
   const danceStyle = searchParams.get("danceStyle");
+  const recordType = searchParams.get("recordType");
 
-  let dancerId: number | null = null;
-  if (dancerName) {
-    const dancer = await prisma.dancer.findUnique({
-      where: { name: dancerName },
-    });
-    if (dancer) {
-      dancerId = dancer.id;
-    }
+  const where = {
+    ...(title ? { title: { contains: title, mode: Prisma.QueryMode.insensitive } } : {}),
+    ...(dancerIds.length > 0 ? { dancers: { some: { dancerId: { in: dancerIds.map(Number) } } } } : {}),
+    ...(danceStyle ? { danceStyle } : {}),
+    ...(recordType ? { recordType } : {}),
   }
 
+  console.log({
+    where
+  })
   const videos = await prisma.video.findMany({
-    where: {
-      ...(dancerId ? { dancers: { some: { dancerId } } } : {}),
-      ...(danceStyle ? { danceStyle } : {}),
-    },
+    where,
     orderBy: {
       recordedAt: "desc",
     },

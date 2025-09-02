@@ -50,7 +50,7 @@ const VideoPreview = ({
       </div>
       <div className="flex flex-col h-full justify-between py-2 gap-1">
         <div className="text-base text-gray-900">
-          {video.filename}
+          {video.title}
         </div>
         <div className="text-sm text-gray-400">
           {missingInfo ? (
