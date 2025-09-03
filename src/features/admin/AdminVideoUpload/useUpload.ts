@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useGetAdminUploadLinkMutation } from "@/store/slices/admin/video";
+import * as tus from "tus-js-client";
+
 
 function useUpload() {
   const [file, setFile] = useState<File | null>(null);
