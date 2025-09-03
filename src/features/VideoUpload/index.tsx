@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
+import { useUpdateUserVideoMutation } from "@/store/slices/user/videos";
 import Step0 from "./Step0";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -9,6 +10,7 @@ import {
   bindSetField,
 } from "./videoDraft";
 
+
 const toRecordedAt = (date: string, time: string) => {
   if (!date || !time) return null;
   const d = new Date(`${date}T${time}`);
@@ -18,22 +20,32 @@ const toRecordedAt = (date: string, time: string) => {
 const VideoUpload = () => {
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [videoUid, setVideoUid] = useState<string | null>(null);
   const [draft, dispatch] = useReducer(videoDraftReducer, initialDraft);
   const setField = bindSetField(dispatch);
+  const [updateUserVideo] = useUpdateUserVideoMutation();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const payload = {
       title: draft.title.trim(),
       danceStyle: draft.danceStyle || undefined,
-      danceType: draft.danceType || undefined,
+      recordType: draft.recordType || undefined,
       recordedAt: toRecordedAt(draft.recordedDate, draft.recordedTime),
       dancerIds: draft.dancerIds,
       visibility: draft.visibility,
     };
 
-    console.log({ payload });
+    if (!videoUid) return;
+
+    await updateUserVideo({ uid: videoUid, data: payload });
+
     dispatch({ type: "RESET" });
     setStep(0);
+  };
+
+  const handleStep0Next = (uid: string) => {
+    setVideoUid(uid);
+    setStep(1);
   };
 
   useEffect(() => {
@@ -52,7 +64,7 @@ const VideoUpload = () => {
 
   return (
     <div>
-      {step === 0 && <Step0 onNext={() => setStep(1)} />}
+      {step === 0 && <Step0 onNext={handleStep0Next} />}
       {step === 1 && (
         <Step1
           progress={progress}

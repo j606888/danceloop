@@ -1,5 +1,5 @@
 export type DanceStyle = "bachata" | "salsa" | "zouk" | "kizomba";
-export type DanceType = "party" | "course" | "workshop" | "other";
+export type RecordType = "party" | "course" | "workshop" | "other";
 export type Visibility = "private" | "unlisted" | "public";
 
 export const DANCE_STYLES = [
@@ -43,7 +43,7 @@ export const DANCE_TYPES = [
 export type VideoDraft = {
   title: string;
   danceStyle: DanceStyle | "";
-  danceType: DanceType | "";
+  recordType: RecordType | "";
   recordedAt: string;
   dancerIds: number[];
   visibility: Visibility;
@@ -54,7 +54,7 @@ export type VideoDraft = {
 export const initialDraft: VideoDraft = {
   title: "",
   danceStyle: "",
-  danceType: "",
+  recordType: "",
   recordedAt: "",
   dancerIds: [],
   visibility: "private",

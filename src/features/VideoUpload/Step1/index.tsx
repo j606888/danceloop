@@ -2,7 +2,7 @@ import ChoiseChips from "@/components/ChoiseChips";
 import { Footer, Stepper, DatePicker, TimePicker } from "../shared";
 import {
   DanceStyle,
-  DanceType,
+  RecordType,
   VideoDraft,
   DANCE_STYLES,
   DANCE_TYPES,
@@ -55,10 +55,10 @@ const Step1 = ({
           </label>
           <ChoiseChips
             options={DANCE_TYPES}
-            value={draft.danceType}
+            value={draft.recordType}
             onChange={(value) =>
-              setField("danceType")(
-                draft.danceType === value ? "" : (value as DanceType)
+              setField("recordType")(
+                draft.recordType === value ? "" : (value as RecordType)
               )
             }
           />

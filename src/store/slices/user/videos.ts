@@ -23,10 +23,28 @@ const userVideosSlice = api.injectEndpoints({
         method: "POST",
       }),
     }),
+    createUserVideo: builder.mutation<Video, { uid: string }>({
+      query: ({ uid }) => ({
+        url: "/user/videos",
+        method: "POST",
+        body: { uid },
+      }),
+    }),
+    updateUserVideo: builder.mutation<Video, { uid: string, data: any }>({
+      query: ({ uid, data }) => ({
+        url: `/user/videos/${uid}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserVideosQuery, useSyncUserVideosMutation } =
-  userVideosSlice;
+export const {
+  useGetUserVideosQuery,
+  useSyncUserVideosMutation,
+  useCreateUserVideoMutation,
+  useUpdateUserVideoMutation,
+} = userVideosSlice;
 
 export default userVideosSlice;
