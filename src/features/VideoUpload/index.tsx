@@ -8,6 +8,10 @@ const VideoUpload = () => {
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  const handleSubmit = () => {
+    setStep(4);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((progress) => {
@@ -33,7 +37,14 @@ const VideoUpload = () => {
           onBack={() => setStep(1)}
         />
       )}
-      {step === 3 && <Step3 />}
+      {step === 3 && (
+        <Step3
+          progress={progress}
+          onBack={() => setStep(2)}
+          onNext={handleSubmit}
+        />
+      )}
+      {step === 4 && <div className="p-5">填寫完成，剩下還在做</div>}
     </div>
   );
 };

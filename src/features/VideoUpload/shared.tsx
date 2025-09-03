@@ -131,7 +131,7 @@ export const DatePicker = ({
         onChange={(e) => onChange(e.target.value)}
       />
       <Calendar
-        className="w-5  absolute right-3 top-1/2 -translate-y-1/2"
+        className="w-5 absolute right-3 top-1/2 -translate-y-1/2 text-[#626262]"
         onClick={() => dateRef.current?.showPicker()}
       />
     </div>
@@ -161,7 +161,7 @@ export const TimePicker = ({
       />
       <Clock
         onClick={() => timeRef.current?.showPicker()}
-        className="w-5 absolute right-3 top-1/2 -translate-y-1/2"
+        className="w-5 absolute right-3 top-1/2 -translate-y-1/2 text-[#626262]"
       />
     </div>
   );

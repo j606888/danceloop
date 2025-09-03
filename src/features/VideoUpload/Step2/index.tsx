@@ -66,7 +66,7 @@ const Step2 = ({
         ref={containerRef}
       >
         <div
-          className={`sticky top-0 p-3 ${
+          className={`sticky top-0 p-3 transition-all duration-300 ${
             isScrolled ? "bg-gray-100 border-b border-[#e5e5e5]" : "bg-white"
           }`}
         >
