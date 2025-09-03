@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { BeatLoader } from "react-spinners";
 import { useGetDancersQuery } from "@/store/slices/dancers";
 import { Stepper, Footer } from "../shared";
 import DancerList from "./DancerList";
@@ -6,28 +7,36 @@ import TagInput from "./TagInput";
 import useScroll from "./useScroll";
 import NewDancerBtn from "./NewDancerBtn";
 import NewDancerForm from "./NewDancerForm";
+import { VideoDraft } from "../videoDraft";
 
 const Step2 = ({
+  preview,
+  draft,
+  setField,
   onNext,
   onBack,
   progress,
+  status,
 }: {
+  preview: string | null;
+  draft: VideoDraft;
+  setField: <K extends keyof VideoDraft>(k: K) => (v: VideoDraft[K]) => void;
   onNext: () => void;
   onBack: () => void;
   progress: number;
+  status: "idle" | "ready" | "uploading" | "success" | "error";
 }) => {
-  const [selectedDancerIds, setSelectedDancerIds] = useState<number[]>([]);
   const [newDancerOpen, setNewDancerOpen] = useState(false);
   const [newDancerDefaultName, setNewDancerDefaultName] = useState("");
   const [keyword, setKeyword] = useState("");
   const { isScrolled, containerRef } = useScroll();
-  const { data: dancers } = useGetDancersQuery();
+  const { data: dancers, isLoading: isLoadingDancers } = useGetDancersQuery();
 
   const selectedDancers = useMemo(() => {
-    return selectedDancerIds
+    return draft.dancerIds
       .map((id) => dancers?.find((dancer) => dancer.id === id))
       .filter((dancer) => dancer !== undefined);
-  }, [dancers, selectedDancerIds]);
+  }, [dancers, draft.dancerIds]);
 
   const filteredDancers = useMemo(
     () =>
@@ -35,21 +44,21 @@ const Step2 = ({
         ?.filter((dancer) =>
           dancer.name.toLowerCase().includes(keyword.toLowerCase())
         )
-        ?.filter((dancer) => !selectedDancerIds.includes(dancer.id)),
-    [dancers, keyword, selectedDancerIds]
+        ?.filter((dancer) => !draft.dancerIds.includes(dancer.id)),
+    [dancers, keyword, draft.dancerIds]
   );
 
   const handleSelectDancer = (dancerId: number) => {
     setKeyword("");
-    if (selectedDancerIds.includes(dancerId)) {
-      setSelectedDancerIds(selectedDancerIds.filter((id) => id !== dancerId));
+    if (draft.dancerIds.includes(dancerId)) {
+      setField("dancerIds")(draft.dancerIds.filter((id) => id !== dancerId));
     } else {
-      setSelectedDancerIds([...selectedDancerIds, dancerId]);
+      setField("dancerIds")([...draft.dancerIds, dancerId]);
     }
   };
 
   const handleRemove = (dancerId: number) => {
-    setSelectedDancerIds(selectedDancerIds.filter((id) => id !== dancerId));
+    setField("dancerIds")(draft.dancerIds.filter((id) => id !== dancerId));
   };
 
   const handleNewDancerButtonClick = () => {
@@ -60,7 +69,7 @@ const Step2 = ({
 
   return (
     <div>
-      <Stepper step={2} title="參與舞者" preview={null} />
+      <Stepper step={2} title="參與舞者" preview={preview} />
       <div
         className="fixed top-[125px] left-0 right-0 bottom-[61px] overflow-y-auto"
         ref={containerRef}
@@ -77,6 +86,7 @@ const Step2 = ({
             setKeyword={setKeyword}
           />
         </div>
+        {isLoadingDancers && <div className="p-4"><BeatLoader color="#6784F6" /></div>}
         {newDancerOpen && (
           <NewDancerForm
             defaultName={newDancerDefaultName}
@@ -91,7 +101,7 @@ const Step2 = ({
           <NewDancerBtn onClick={handleNewDancerButtonClick} name={keyword} />
         )}
       </div>
-      <Footer progress={progress} onNext={onNext} onBack={onBack} />
+      <Footer progress={progress} status={status} onNext={onNext} onBack={onBack} />
     </div>
   );
 };

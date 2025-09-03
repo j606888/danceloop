@@ -26,8 +26,6 @@ export async function GET(request: Request) {
     },
   });
 
-  
-
   const videosWithDancerNames = videos.map((video) => ({
     ...video,
     dancers: video.dancers.map((dancer) => dancer.dancer),
@@ -36,4 +34,15 @@ export async function GET(request: Request) {
   return NextResponse.json({
     result: videosWithDancerNames
   });
+}
+
+export async function POST(request: Request) {
+  const { userId } = await decodeAuthToken();
+  const { uid } = await request.json();
+
+  const video = await prisma.video.create({
+    data: { userId, uid, state: "DRAFT" },
+  });
+
+  return NextResponse.json(video);
 }

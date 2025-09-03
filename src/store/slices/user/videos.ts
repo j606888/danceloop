@@ -22,11 +22,32 @@ const userVideosSlice = api.injectEndpoints({
         url: "/user/videos/sync",
         method: "POST",
       }),
+      invalidatesTags: ["Video"],
+    }),
+    createUserVideo: builder.mutation<Video, { uid: string }>({
+      query: ({ uid }) => ({
+        url: "/user/videos",
+        method: "POST",
+        body: { uid, state: "UPLOADING" },
+      }),
+      invalidatesTags: ["Video"],
+    }),
+    updateUserVideo: builder.mutation<Video, { uid: string, data: any }>({
+      query: ({ uid, data }) => ({
+        url: `/user/videos/${uid}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Video"],
     }),
   }),
 });
 
-export const { useGetUserVideosQuery, useSyncUserVideosMutation } =
-  userVideosSlice;
+export const {
+  useGetUserVideosQuery,
+  useSyncUserVideosMutation,
+  useCreateUserVideoMutation,
+  useUpdateUserVideoMutation,
+} = userVideosSlice;
 
 export default userVideosSlice;
