@@ -30,8 +30,8 @@ const TagInput = ({
       <input
         ref={inputRef}
         type="text"
-        placeholder={selectedDancers?.length === 0 ? "Search Dancer" : ""}
-        className={`outline-none ${
+        placeholder="Search"
+        className={`text-[#232323] outline-none ${
           selectedDancers?.length === 0 ? "w-full" : "w-[104px]"
         }`}
         value={keyword}

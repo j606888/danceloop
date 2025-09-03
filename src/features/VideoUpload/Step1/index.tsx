@@ -67,7 +67,7 @@ const Step1 = ({
             onChange={handleDanceTypeChange}
           />
         </div>
-        <div>
+        <div className="mb-30">
           <label className="block text-[#21212] text-sm font-medium mb-1">
             時間
           </label>
