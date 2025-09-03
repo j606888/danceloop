@@ -27,7 +27,7 @@ const userVideosSlice = api.injectEndpoints({
       query: ({ uid }) => ({
         url: "/user/videos",
         method: "POST",
-        body: { uid },
+        body: { uid, state: "UPLOADING" },
       }),
     }),
     updateUserVideo: builder.mutation<Video, { uid: string, data: any }>({

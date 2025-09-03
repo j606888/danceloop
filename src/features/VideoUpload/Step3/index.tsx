@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Footer, Stepper } from "../shared";
 import { VideoDraft, Visibility } from "../videoDraft";
 
@@ -22,12 +21,16 @@ const PRIVACY_OPTIONS = [
 
 const Step3 = ({
   progress,
+  status,
+  preview,
   draft,
   setField,
   onBack,
   onNext,
 }: {
   progress: number;
+  status: "idle" | "ready" | "uploading" | "success" | "error";
+  preview: string | null;
   draft: VideoDraft;
   setField: <K extends keyof VideoDraft>(k: K) => (v: VideoDraft[K]) => void;
   onBack: () => void;
@@ -35,7 +38,7 @@ const Step3 = ({
 }) => {
   return (
     <>
-      <Stepper step={3} title="瀏覽權限" preview={null} />
+      <Stepper step={3} title="瀏覽權限" preview={preview} />
       <div className="px-5 py-3">
         <div className="mb-3">
           <label className="block text-[#21212] text-sm font-medium ">
@@ -61,10 +64,11 @@ const Step3 = ({
       </div>
       <Footer
         progress={progress}
+        status={status}
         onBack={onBack}
         onNext={onNext}
         onNextText="儲存"
-        onNextDisabled={progress !== 100}
+        onNextDisabled={progress !== 100 || status !== "success"}
       />
     </>
   );

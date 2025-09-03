@@ -1,15 +1,12 @@
-import { useState, useEffect, useReducer } from "react";
-import { useUpdateUserVideoMutation } from "@/store/slices/user/videos";
+import { useState, useReducer, useCallback, useEffect } from "react";
+import { useUpdateUserVideoMutation, useCreateUserVideoMutation } from "@/store/slices/user/videos";
 import Step0 from "./Step0";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
-import {
-  initialDraft,
-  videoDraftReducer,
-  bindSetField,
-} from "./videoDraft";
-
+import useUpload from "./useUpload";
+import { initialDraft, videoDraftReducer, bindSetField } from "./videoDraft";
+import { useRouter } from "next/navigation";
 
 const toRecordedAt = (date: string, time: string) => {
   if (!date || !time) return null;
@@ -19,12 +16,19 @@ const toRecordedAt = (date: string, time: string) => {
 
 const VideoUpload = () => {
   const [step, setStep] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [videoUid, setVideoUid] = useState<string | null>(null);
   const [draft, dispatch] = useReducer(videoDraftReducer, initialDraft);
   const setField = bindSetField(dispatch);
   const [updateUserVideo] = useUpdateUserVideoMutation();
-
+  const {
+    file,
+    preview,
+    progress,
+    status,
+    mediaId,
+    onSelect,
+  } = useUpload();
+  const [createVideo] = useCreateUserVideoMutation();
+  const router = useRouter();
   const handleSubmit = async () => {
     const payload = {
       title: draft.title.trim(),
@@ -33,41 +37,44 @@ const VideoUpload = () => {
       recordedAt: toRecordedAt(draft.recordedDate, draft.recordedTime),
       dancerIds: draft.dancerIds,
       visibility: draft.visibility,
+      state: "PROCESSING",
     };
 
-    if (!videoUid) return;
+    if (!mediaId) return;
 
-    await updateUserVideo({ uid: videoUid, data: payload });
+    await updateUserVideo({ uid: mediaId, data: payload });
+    router.push("/video/management");
 
-    dispatch({ type: "RESET" });
-    setStep(0);
   };
 
-  const handleStep0Next = (uid: string) => {
-    setVideoUid(uid);
+  const handleStep0Next = useCallback(() => {
     setStep(1);
-  };
+  }, [setStep]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((progress) => {
-        if (progress >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return progress + 1;
-      });
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
+    if (mediaId) {
+      createVideo({ uid: mediaId })
+    }
+  }, [mediaId, createVideo])
 
   return (
     <div>
-      {step === 0 && <Step0 onNext={handleStep0Next} />}
+      {step === 0 && (
+        <Step0
+          mediaId={mediaId}
+          file={file}
+          draft={draft}
+
+          onSelect={onSelect}
+          setField={setField}
+          onNext={handleStep0Next}
+        />
+      )}
       {step === 1 && (
         <Step1
           progress={progress}
+          status={status}
+          preview={preview}
           draft={draft}
           setField={setField}
           onNext={() => setStep(2)}
@@ -76,6 +83,8 @@ const VideoUpload = () => {
       {step === 2 && (
         <Step2
           progress={progress}
+          status={status}
+          preview={preview}
           draft={draft}
           setField={setField}
           onNext={() => setStep(3)}
@@ -85,6 +94,8 @@ const VideoUpload = () => {
       {step === 3 && (
         <Step3
           progress={progress}
+          status={status}
+          preview={preview}
           draft={draft}
           setField={setField}
           onBack={() => setStep(2)}

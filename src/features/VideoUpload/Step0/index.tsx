@@ -1,18 +1,26 @@
-import { useCreateUserVideoMutation } from "@/store/slices/user/videos";
+import { useEffect } from "react";
+import { VideoDraft } from "../videoDraft";
 
-const Step0 = ({ onNext }: { onNext: (uid: string) => void }) => {
-  const [createVideo] = useCreateUserVideoMutation();
-
-  const handleUploadVideo = () => {
-    // Need to upload video later
-    handleCreateVideo();
-  };
-
-  const handleCreateVideo = async () => {
-    const randomUid = crypto.randomUUID();
-    const video = await createVideo({ uid: randomUid }).unwrap();
-    onNext(video.uid);
-  };
+const Step0 = ({
+  file,
+  draft,
+  onNext,
+  setField,
+  onSelect,
+}: {
+  file: File | null;
+  mediaId: string | null;
+  draft: VideoDraft;
+  onNext: () => void;
+  setField: <K extends keyof VideoDraft>(k: K) => (v: VideoDraft[K]) => void;
+  onSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  useEffect(() => {
+    if (file && !draft.title) {
+      setField("title")(file.name || "");
+      onNext();
+    }
+  }, [file, setField, draft.title, onNext]);
 
   return (
     <div className="absolute top-[56px] left-0 right-0 bottom-0 flex flex-col items-center justify-center ">
@@ -25,12 +33,22 @@ const Step0 = ({ onNext }: { onNext: (uid: string) => void }) => {
       <p className="text-sm text-[#444444] mb-5">
         在選擇公開前你的影片都會是私人狀態
       </p>
-      <button
-        className="bg-[#6784F6] text-white px-4 py-2 rounded-full font-medium cursor-pointer"
-        onClick={handleUploadVideo}
-      >
-        選取檔案
-      </button>
+      <div>
+        <label
+          htmlFor="upload-file"
+          className="bg-[#6784F6] text-white px-4 py-2 rounded-full font-medium cursor-pointer"
+        >
+          選取檔案
+        </label>
+        <input
+          id="upload-file"
+          type="file"
+          accept="video/*"
+          name="選擇檔案"
+          onChange={onSelect}
+          className="hidden"
+        />
+      </div>
     </div>
   );
 };

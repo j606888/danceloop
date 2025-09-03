@@ -9,19 +9,23 @@ import {
 } from "../videoDraft";
 
 const Step1 = ({
+  preview,
   draft,
   setField,
   progress,
   onNext,
+  status,
 }: {
+  preview: string | null;
   draft: VideoDraft;
   setField: <K extends keyof VideoDraft>(k: K) => (v: VideoDraft[K]) => void;
   progress: number;
   onNext: () => void;
+  status: "idle" | "ready" | "uploading" | "success" | "error";
 }) => {
   return (
     <>
-      <Stepper step={1} title="詳細資訊" preview={null} />
+      <Stepper step={1} title="詳細資訊" preview={preview} />
       <div className="px-5 py-3 flex flex-col gap-4">
         <div>
           <label className="block text-[#21212] text-sm font-medium mb-1">
@@ -79,7 +83,7 @@ const Step1 = ({
           </div>
         </div>
       </div>
-      <Footer progress={progress} onNext={onNext} />
+      <Footer progress={progress} status={status} onNext={onNext} />
     </>
   );
 };

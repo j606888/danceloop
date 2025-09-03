@@ -44,12 +44,14 @@ export const Stepper = ({
 
 export const Footer = ({
   progress,
+  status,
   onNext,
   onBack,
   onNextText = "繼續",
   onNextDisabled = false,
 }: {
   progress: number;
+  status: "idle" | "ready" | "uploading" | "success" | "error";
   onNext: () => void;
   onBack?: () => void;
   onNextText?: string;
@@ -58,7 +60,7 @@ export const Footer = ({
   return (
     <div className="px-5 py-3 bg-white fixed bottom-0 left-0 right-0 flex items-center justify-between border-t border-[#E5E5E5]">
       <div className="text-sm text-[#777777] font-medium">
-        {progress === 100 ? "上傳完成" : `上傳中 ${progress}%`}
+        {status === "success" ? "上傳完成" : progress === 100 ? "處理中...即將完成" : `上傳中 ${progress}%`}
       </div>
       <div className="flex items-center gap-2">
         {onBack && (

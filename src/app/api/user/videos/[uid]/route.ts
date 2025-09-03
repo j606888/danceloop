@@ -6,7 +6,7 @@ export async function PATCH(
   { params }: { params: Promise<{ uid: string }> }
 ) {
   const { uid } = await params;
-  const { title, danceStyle, recordType, dancerIds, recordedAt, visibility } =
+  const { title, danceStyle, recordType, dancerIds, recordedAt, visibility, state } =
     await request.json();
 
   const video = await prisma.video.findUnique({
@@ -20,7 +20,7 @@ export async function PATCH(
   await prisma.$transaction(async (tx) => {
     await tx.video.update({
       where: { uid },
-      data: { title, recordedAt, danceStyle, recordType, visibility },
+      data: { title, recordedAt, danceStyle, recordType, visibility, state },
     });
     await tx.videoDancer.deleteMany({
       where: { videoId: video.id },

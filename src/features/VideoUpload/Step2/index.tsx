@@ -10,19 +10,22 @@ import NewDancerForm from "./NewDancerForm";
 import { VideoDraft } from "../videoDraft";
 
 const Step2 = ({
+  preview,
   draft,
   setField,
   onNext,
   onBack,
   progress,
+  status,
 }: {
+  preview: string | null;
   draft: VideoDraft;
   setField: <K extends keyof VideoDraft>(k: K) => (v: VideoDraft[K]) => void;
   onNext: () => void;
   onBack: () => void;
   progress: number;
+  status: "idle" | "ready" | "uploading" | "success" | "error";
 }) => {
-  const [x, setSelectedDancerIds] = useState<number[]>([]);
   const [newDancerOpen, setNewDancerOpen] = useState(false);
   const [newDancerDefaultName, setNewDancerDefaultName] = useState("");
   const [keyword, setKeyword] = useState("");
@@ -66,7 +69,7 @@ const Step2 = ({
 
   return (
     <div>
-      <Stepper step={2} title="參與舞者" preview={null} />
+      <Stepper step={2} title="參與舞者" preview={preview} />
       <div
         className="fixed top-[125px] left-0 right-0 bottom-[61px] overflow-y-auto"
         ref={containerRef}
@@ -98,7 +101,7 @@ const Step2 = ({
           <NewDancerBtn onClick={handleNewDancerButtonClick} name={keyword} />
         )}
       </div>
-      <Footer progress={progress} onNext={onNext} onBack={onBack} />
+      <Footer progress={progress} status={status} onNext={onNext} onBack={onBack} />
     </div>
   );
 };
