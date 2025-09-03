@@ -22,6 +22,7 @@ const userVideosSlice = api.injectEndpoints({
         url: "/user/videos/sync",
         method: "POST",
       }),
+      invalidatesTags: ["Video"],
     }),
     createUserVideo: builder.mutation<Video, { uid: string }>({
       query: ({ uid }) => ({
@@ -29,6 +30,7 @@ const userVideosSlice = api.injectEndpoints({
         method: "POST",
         body: { uid, state: "UPLOADING" },
       }),
+      invalidatesTags: ["Video"],
     }),
     updateUserVideo: builder.mutation<Video, { uid: string, data: any }>({
       query: ({ uid, data }) => ({
@@ -36,6 +38,7 @@ const userVideosSlice = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ["Video"],
     }),
   }),
 });
