@@ -1,24 +1,33 @@
-import { Stepper, Footer } from "../shared";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useGetDancersQuery } from "@/store/slices/dancers";
+import { Stepper, Footer } from "../shared";
 import DancerList from "./DancerList";
 import TagInput from "./TagInput";
 import useScroll from "./useScroll";
+import NewDancerBtn from "./NewDancerBtn";
+import NewDancerForm from "./NewDancerForm";
 
 const Step2 = ({
   onNext,
+  onBack,
   progress,
 }: {
   onNext: () => void;
+  onBack: () => void;
   progress: number;
 }) => {
-  const { isScrolled, containerRef } = useScroll();
   const [selectedDancerIds, setSelectedDancerIds] = useState<number[]>([]);
-  const { data: dancers } = useGetDancersQuery();
-  const selectedDancers = dancers?.filter((dancer) =>
-    selectedDancerIds.includes(dancer.id)
-  );
+  const [newDancerOpen, setNewDancerOpen] = useState(false);
+  const [newDancerDefaultName, setNewDancerDefaultName] = useState("");
   const [keyword, setKeyword] = useState("");
+  const { isScrolled, containerRef } = useScroll();
+  const { data: dancers } = useGetDancersQuery();
+
+  const selectedDancers = useMemo(() => {
+    return selectedDancerIds
+      .map((id) => dancers?.find((dancer) => dancer.id === id))
+      .filter((dancer) => dancer !== undefined);
+  }, [dancers, selectedDancerIds]);
 
   const filteredDancers = useMemo(
     () =>
@@ -39,8 +48,14 @@ const Step2 = ({
     }
   };
 
-  const onRemove = (dancerId: number) => {
+  const handleRemove = (dancerId: number) => {
     setSelectedDancerIds(selectedDancerIds.filter((id) => id !== dancerId));
+  };
+
+  const handleNewDancerButtonClick = () => {
+    setNewDancerDefaultName(keyword);
+    setNewDancerOpen(true);
+    setKeyword("");
   };
 
   return (
@@ -51,20 +66,32 @@ const Step2 = ({
         ref={containerRef}
       >
         <div
-          className={`sticky top-0 p-3  ${
+          className={`sticky top-0 p-3 ${
             isScrolled ? "bg-gray-100 border-b border-[#e5e5e5]" : "bg-white"
           }`}
         >
           <TagInput
-            selectedDancers={selectedDancers || []}
-            onRemove={onRemove}
+            selectedDancers={selectedDancers}
+            onRemove={handleRemove}
             keyword={keyword}
             setKeyword={setKeyword}
           />
         </div>
-        <DancerList dancers={filteredDancers || []} onClick={handleSelectDancer} />
+        {newDancerOpen && (
+          <NewDancerForm
+            defaultName={newDancerDefaultName}
+            onClose={() => setNewDancerOpen(false)}
+            onSelect={handleSelectDancer}
+          />
+        )}
+        {!newDancerOpen && filteredDancers && filteredDancers.length > 0 && (
+          <DancerList dancers={filteredDancers} onClick={handleSelectDancer} />
+        )}
+        {!newDancerOpen && keyword && (
+          <NewDancerBtn onClick={handleNewDancerButtonClick} name={keyword} />
+        )}
       </div>
-      <Footer progress={progress} onNext={onNext} />
+      <Footer progress={progress} onNext={onNext} onBack={onBack} />
     </div>
   );
 };

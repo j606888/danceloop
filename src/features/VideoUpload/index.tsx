@@ -26,10 +26,16 @@ const VideoUpload = () => {
     <div>
       {step === 0 && <Step0 onNext={() => setStep(1)} />}
       {step === 1 && <Step1 progress={progress} onNext={() => setStep(2)} />}
-      {step === 2 && <Step2 progress={progress} onNext={() => setStep(3)} />}
+      {step === 2 && (
+        <Step2
+          progress={progress}
+          onNext={() => setStep(3)}
+          onBack={() => setStep(1)}
+        />
+      )}
       {step === 3 && <Step3 />}
     </div>
-  )
-}
+  );
+};
 
 export default VideoUpload;
