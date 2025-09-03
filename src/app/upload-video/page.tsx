@@ -1,13 +1,13 @@
 "use client";
 
 import Navbar from "@/features/Navbar";
-import UploadVideo from "@/features/UploadVideoLegacy";
+import VideoUpload from "@/features/VideoUpload";
 
 const UploadVideoPage = () => {
   return (
     <>
       <Navbar />
-      <UploadVideo />
+      <VideoUpload />
     </>
   );
 };
