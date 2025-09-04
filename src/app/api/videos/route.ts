@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { Prisma, VideoState } from "@prisma/client";
+import { VISIBILITIES } from "@/lib/constants";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,6 +12,7 @@ export async function GET(request: Request) {
 
   const where = {
     state: VideoState.READY,
+    visibility: VISIBILITIES.PUBLIC,
     ...(title ? { title: { contains: title, mode: Prisma.QueryMode.insensitive } } : {}),
     ...(dancerIds.length > 0 ? { dancers: { some: { dancerId: { in: dancerIds.map(Number) } } } } : {}),
     ...(danceStyle ? { danceStyle } : {}),
