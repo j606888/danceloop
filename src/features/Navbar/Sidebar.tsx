@@ -38,7 +38,7 @@ const MENU_ITEMS = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isLogin }: { isLogin: boolean }) => {
   const [open, setOpen] = useState(false);
   const [logout] = useLogoutMutation();
   const router = useRouter();
@@ -73,30 +73,44 @@ const Sidebar = () => {
                 <img src="/icons/Logo.svg" alt="Logo" />
                 <h4 className="text-xl font-bold tracking-tight">DanceLoop</h4>
               </div>
-              <Link href="/upload-video">
-                <div className="flex items-center justify-center align-center gap-2 py-3 border-1 text-[#6784F6] border-[#6784F6] rounded-full font-medium">
-                  <CloudUpload />
-                  <span>Upload Video</span>
-                </div>
-              </Link>
-              <div className="border-b border-[#eeeeee] my-4"></div>
-              <div className="flex flex-col gap-1 h-full">
-                {MENU_ITEMS.map((item) => (
-                  <Link key={item.label} href={item.href}>
-                    <div className="flex items-center gap-3 p-3 rounded-xl text-[#323232] font-medium">
-                      <item.icon />
-                      <span>{item.label}</span>
+              {isLogin ? (
+                <>
+                  <Link href="/upload-video">
+                    <div className="flex items-center justify-center align-center gap-2 py-3 border-1 text-[#6784F6] border-[#6784F6] rounded-full font-medium">
+                      <CloudUpload />
+                      <span>Upload Video</span>
                     </div>
                   </Link>
-                ))}
-                <div
-                  className="flex items-center mt-auto gap-3 p-3 rounded-xl text-[#323232] font-medium cursor-pointer"
-                  onClick={handleLogout}
-                >
-                  <LogOutIcon />
-                  <span>Logout</span>
-                </div>
-                <div className="flex items-center gap-3 px-3 rounded-xl text-[#777777] text-xs">
+                  <div className="border-b border-[#eeeeee] my-4"></div>
+                  <div className="flex flex-col gap-1 h-full">
+                    {MENU_ITEMS.map((item) => (
+                      <Link key={item.label} href={item.href}>
+                        <div className="flex items-center gap-3 p-3 rounded-xl text-[#323232] font-medium">
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <Link href="/login">
+                  <div className="flex items-center justify-center align-center gap-2 py-3 border-1 text-[#6784F6] border-[#6784F6] rounded-full font-medium">
+                    <span>登入使用</span>
+                  </div>
+                </Link>
+              )}
+              <div className="flex flex-col mt-auto gap-1 ">
+                {isLogin && (
+                  <div
+                    className="flex items-center gap-3 p-3 rounded-xl text-[#323232] font-medium cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    <LogOutIcon />
+                    <span>Logout</span>
+                  </div>
+                )}
+                <div className="flex items-center mt-auto gap-3 px-3 rounded-xl text-[#777777] text-xs">
                   <span>Powered by 丁丁</span>
                 </div>
               </div>

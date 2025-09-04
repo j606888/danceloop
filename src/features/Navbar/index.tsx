@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50 flex gap-4 h-[56px] px-3 items-center shadow-[0px_2px_6px_0px_rgba(0,0,0,0.12)] bg-white">
-      <Sidebar />
+      <Sidebar isLogin={isLogin} />
       <Link href="/" className="flex items-center gap-1 mr-auto">
         <img src="/icons/Logo.svg" alt="Logo" />
         <h4 className="text-xl font-bold tracking-tight">DanceLoop</h4>
