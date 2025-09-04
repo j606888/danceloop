@@ -1,26 +1,47 @@
 "use client";
 
 import { useGetUserVideosQuery } from "@/store/slices/user/videos";
-import { Search } from "lucide-react";
 import { Video } from "@/store/slices/videos";
 import VideoCard from "./VideoCard";
+import Searchbar from "./Searchbar";
+import { useReducer } from "react";
+import { BeatLoader } from "react-spinners";
+import {
+  filterDraftReducer,
+  bindSetField,
+  initialFilterDraft,
+} from "./Searchbar/filterDraft";
+import ActiveFilters from "./ActiveFilters";
 
 const VideoManagement = () => {
-  const { data, isLoading } = useGetUserVideosQuery({});
+  const [filters, dispatch] = useReducer(
+    filterDraftReducer,
+    initialFilterDraft
+  );
+  const { data, isLoading } = useGetUserVideosQuery(filters);
   const videos = data?.result;
+  const setField = bindSetField(dispatch);
 
   return (
-    <div className="p-2">
-      <div className="flex items-center gap-2 mb-2 p-3 border border-gray-300 rounded-full">
-        <Search className="w-4 h-4" />
-        <input type="text" placeholder="Search" />
+    <>
+      <div className="sticky top-[56px] p-2.5 bg-[#F1F1F1] flex flex-col gap-2.5 z-100">
+        <Searchbar setField={setField} filters={filters} />
+        <ActiveFilters filters={filters} setField={setField} />
       </div>
-      {isLoading ? <div>loading...</div> : <div>
-        {videos?.map((video: Video) => (
-          <VideoCard key={video.id} video={video} />
-        ))}
-      </div>}
-    </div>
+      <div className="p-2.5">
+        {isLoading ? (
+          <div className="flex justify-center items-center h-screen">
+            <BeatLoader size={20} color="#4A81D9" />
+          </div>
+        ) : (
+          <div>
+            {videos?.map((video: Video) => (
+              <VideoCard key={video.id} video={video} />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

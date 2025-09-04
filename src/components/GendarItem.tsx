@@ -5,16 +5,18 @@ export const DancerBadge = ({
   size = 'base',
   dancer,
   onRemove,
+  className,
 }: {
   dancer: Dancer;
   size?: 'base' | 'sm';
   onRemove?: (dancerId: number) => void;
+  className?: string;
 }) => {
   return (
     <div
       className={`flex gap-1.5 justify-center items-center px-2 ${size === 'sm' ? 'h-[28px]' : 'h-[32px]'} rounded-full ${
         dancer.gender === "male" ? "bg-[#6784F6]/10" : "bg-[#DD886F]/10"
-      }`}
+      } ${className}`}
     >
       {dancer.gender === "male" ? (
         <Mars className={`${size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} text-[#6784F6]`} />
