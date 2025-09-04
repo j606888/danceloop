@@ -11,6 +11,7 @@ const UserSlice = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
     }),
     login: builder.mutation<null, { email: string; password: string }>({
       query: (data) => ({
@@ -18,14 +19,28 @@ const UserSlice = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
+    }),
+    logout: builder.mutation<null, void>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+      invalidatesTags: ["User"],
     }),
     me: builder.query<any, void>({
       query: () => ({
         url: "/me",
         method: "GET",
       }),
+      providesTags: ["User"],
     }),
   }),
 });
 
-export const { useSignupMutation, useLoginMutation, useMeQuery } = UserSlice;
+export const {
+  useSignupMutation,
+  useLoginMutation,
+  useMeQuery,
+  useLogoutMutation,
+} = UserSlice;
