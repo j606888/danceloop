@@ -1,4 +1,4 @@
-import { FilterDraft } from "./filterDraft";
+import { FilterDraft } from "./Searchbar/filterDraft";
 import { Type, X } from "lucide-react";
 import { DANCE_STYLES, RECORD_TYPES } from "@/lib/constants";
 import { useGetDancersQuery } from "@/store/slices/dancers";

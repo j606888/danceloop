@@ -5,11 +5,12 @@ import { Video } from "@/store/slices/videos";
 import VideoCard from "./VideoCard";
 import Searchbar from "./Searchbar";
 import { useReducer } from "react";
+import { BeatLoader } from "react-spinners";
 import {
   filterDraftReducer,
   bindSetField,
   initialFilterDraft,
-} from "./filterDraft";
+} from "./Searchbar/filterDraft";
 import ActiveFilters from "./ActiveFilters";
 
 const VideoManagement = () => {
@@ -23,13 +24,15 @@ const VideoManagement = () => {
 
   return (
     <>
-      <div className="sticky top-[56px] p-2.5 bg-[#F1F1F1] flex flex-col gap-2.5">
+      <div className="sticky top-[56px] p-2.5 bg-[#F1F1F1] flex flex-col gap-2.5 z-100">
         <Searchbar setField={setField} filters={filters} />
         <ActiveFilters filters={filters} setField={setField} />
       </div>
       <div className="p-2.5">
         {isLoading ? (
-          <div>loading...</div>
+          <div className="flex justify-center items-center h-screen">
+            <BeatLoader size={20} color="#4A81D9" />
+          </div>
         ) : (
           <div>
             {videos?.map((video: Video) => (

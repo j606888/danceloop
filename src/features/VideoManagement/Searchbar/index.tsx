@@ -1,4 +1,4 @@
-import { Search, ListFilter } from "lucide-react";
+import { Search } from "lucide-react";
 import { DancerBadge } from "@/components/GendarItem";
 import {
   DANCE_STYLES,
@@ -30,9 +30,6 @@ const Searchbar = ({
     q,
     clearSearch,
   } = useFocus();
-  // const [filters, dispatch] = useReducer(filterDraftReducer, initialFilterDraft);
-  // const setField = bindSetField(dispatch);
-
   const { data: dancers } = useGetDancersQuery();
   const danceStyle = q
     ? DANCE_STYLES.find((s) => s.value.toLowerCase().includes(q))

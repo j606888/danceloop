@@ -1,5 +1,6 @@
 import { api } from "../api";
 import { Dancer } from "./dancers";
+import { Visibility } from "@/lib/constants";
 
 export type Video = {
   id: number;
@@ -8,6 +9,7 @@ export type Video = {
   state: string;
   thumbnail: string;
   duration: number;
+  visibility: Visibility;
   filename: string;
   dancerNames: string[];
   preview: string;

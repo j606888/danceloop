@@ -2,6 +2,12 @@ export type DanceStyle = "bachata" | "salsa" | "zouk" | "kizomba";
 export type RecordType = "party" | "course" | "workshop" | "other";
 export type Visibility = "private" | "unlisted" | "public";
 
+export const VISIBILITY_LABELS = {
+  private: "私人",
+  unlisted: "不公開",
+  public: "公開",
+}
+
 export const DANCE_STYLES = [
   {
     label: 'Bachata',
