@@ -17,7 +17,7 @@ const Navbar = () => {
       <SyncVideo />
       {isLogin ? (
         <div className="flex items-center justify-center bg-[#DD886F] w-8 h-8 rounded-full">
-          <p className="text-white text-sm">{user?.name.charAt(0)}</p>
+          <p className="text-white text-sm">{user?.name?.charAt(0)}</p>
         </div>
       ) : (
         <Link href="/login" className="px-3 py-2 bg-[#DD886F] text-white rounded-[10px]">
