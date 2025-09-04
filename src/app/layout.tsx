@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { Providers } from "@/store/provider";
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import "./globals.css";
 
 const roboto = Roboto({
@@ -24,9 +25,11 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} antialiased`}
       >
-        <Providers>
-          {children}
-        </Providers>
+        <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
+          <Providers>
+            {children}
+          </Providers>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

@@ -4,8 +4,8 @@ import SyncVideo from "./SyncVideo";
 import Link from "next/link";
 
 const Navbar = () => {
-  const { data: user } = useMeQuery();
-  const isLogin = !!user;
+  const { data: user, error } = useMeQuery();
+  const isLogin = !!user && !error;
 
   return (
     <div className="sticky top-0 z-50 flex gap-4 h-[56px] px-3 items-center shadow-[0px_2px_6px_0px_rgba(0,0,0,0.12)] bg-white">
@@ -20,9 +20,9 @@ const Navbar = () => {
           <p className="text-white text-sm">{user?.name.charAt(0)}</p>
         </div>
       ) : (
-        <button className="px-3 py-2 bg-[#DD886F] text-white rounded-[10px]">
-          登入
-        </button>
+        <Link href="/login" className="px-3 py-2 bg-[#DD886F] text-white rounded-[10px]">
+          <span>登入</span>
+        </Link>
       )}
     </div>
   );

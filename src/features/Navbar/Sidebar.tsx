@@ -9,8 +9,11 @@ import {
   SquarePlay,
   Heart,
   CircleUser,
+  LogOutIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { useLogoutMutation } from "@/store/slices/user";
+import { useRouter } from "next/navigation";
 
 const MENU_ITEMS = [
   {
@@ -37,6 +40,14 @@ const MENU_ITEMS = [
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
+  const [logout] = useLogoutMutation();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout().unwrap();
+    setOpen(false);
+    router.push("/");
+  };
 
   return (
     <>
@@ -69,15 +80,25 @@ const Sidebar = () => {
                 </div>
               </Link>
               <div className="border-b border-[#eeeeee] my-4"></div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1 h-full">
                 {MENU_ITEMS.map((item) => (
                   <Link key={item.label} href={item.href}>
-                    <div className="flex items-center gap-3 p-3 rounded-xl text-[#454545] font-medium">
+                    <div className="flex items-center gap-3 p-3 rounded-xl text-[#323232] font-medium">
                       <item.icon />
                       <span>{item.label}</span>
                     </div>
                   </Link>
                 ))}
+                <div
+                  className="flex items-center mt-auto gap-3 p-3 rounded-xl text-[#323232] font-medium cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  <LogOutIcon />
+                  <span>Logout</span>
+                </div>
+                <div className="flex items-center gap-3 px-3 rounded-xl text-[#777777] text-xs">
+                  <span>Powered by 丁丁</span>
+                </div>
               </div>
               <X
                 className="absolute right-4 top-4 w-6 h-6 cursor-pointer text-gray-600"

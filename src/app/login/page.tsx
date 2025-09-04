@@ -1,17 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { useLoginMutation } from "@/store/slices/user";
+import { useLoginMutation, useGoogleSignInMutation } from "@/store/slices/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
+  const [googleSignIn] = useGoogleSignInMutation();
   const router = useRouter();
   const [error, setError] = useState("");
 
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      await googleSignIn({ access_token: codeResponse.access_token }).unwrap();
+
+      router.push("/");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,7 +48,10 @@ const LoginPage = () => {
           </h1>
           <p className="text-[#777777]">Enter your login information</p>
         </div>
-        <button className="flex items-center justify-center gap-2.5 py-4 border-1 rounded-[10px] border-[#E5E5E5] cursor-pointer">
+        <button
+          className="flex items-center justify-center gap-2.5 py-4 border-1 rounded-[10px] border-[#E5E5E5] cursor-pointer"
+          onClick={() => googleLogin()}
+        >
           <img src="/icons/google.svg" alt="Google" />
           <span>Login with Google</span>
         </button>
@@ -74,7 +89,9 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <p className="text-[#BD4545] p-2.5 bg-[#FDEAEA] text-sm">{error}</p>}
+          {error && (
+            <p className="text-[#BD4545] p-2.5 bg-[#FDEAEA] text-sm">{error}</p>
+          )}
           {/* <div className="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
