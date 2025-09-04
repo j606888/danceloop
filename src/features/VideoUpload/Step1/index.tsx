@@ -1,12 +1,12 @@
 import ChoiseChips from "@/components/ChoiseChips";
 import { Footer, Stepper, DatePicker, TimePicker } from "../shared";
+import { VideoDraft } from "../videoDraft";
 import {
+  DANCE_STYLES,
+  RECORD_TYPES,
   DanceStyle,
   RecordType,
-  VideoDraft,
-  DANCE_STYLES,
-  DANCE_TYPES,
-} from "../videoDraft";
+} from "@/lib/constants";
 
 const Step1 = ({
   preview,
@@ -58,7 +58,7 @@ const Step1 = ({
             類型
           </label>
           <ChoiseChips
-            options={DANCE_TYPES}
+            options={RECORD_TYPES}
             value={draft.recordType}
             onChange={(value) =>
               setField("recordType")(

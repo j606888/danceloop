@@ -3,11 +3,32 @@ import { Video } from "../videos";
 
 const userVideosSlice = api.injectEndpoints({
   endpoints: (builder) => ({
-    getUserVideos: builder.query<{ result: Video[] }, { state?: string }>({
-      query: ({ state } = {}) => {
+    getUserVideos: builder.query<
+      { result: Video[] },
+      {
+        state?: string;
+        title?: string;
+        danceStyle?: string;
+        recordType?: string;
+        dancerIds?: number[];
+      }
+    >({
+      query: ({ state, title, danceStyle, recordType, dancerIds } = {}) => {
         const query = new URLSearchParams();
         if (state) {
           query.set("state", state);
+        }
+        if (title) {
+          query.set("title", title);
+        }
+        if (danceStyle) {
+          query.set("danceStyle", danceStyle);
+        }
+        if (recordType) {
+          query.set("recordType", recordType);
+        }
+        if (dancerIds && dancerIds.length > 0) {
+          query.set("dancerIds", dancerIds.join(","));
         }
         const qs = query.toString();
         return `/user/videos${qs ? `?${qs}` : ""}`;
@@ -32,7 +53,7 @@ const userVideosSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["Video"],
     }),
-    updateUserVideo: builder.mutation<Video, { uid: string, data: any }>({
+    updateUserVideo: builder.mutation<Video, { uid: string; data: any }>({
       query: ({ uid, data }) => ({
         url: `/user/videos/${uid}`,
         method: "PATCH",
