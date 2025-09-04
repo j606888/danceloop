@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useSignupMutation } from "@/store/slices/user";
+import {
+  useSignupMutation,
+  useGoogleSignInMutation,
+} from "@/store/slices/user";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const SignupPages = () => {
   const [name, setName] = useState("");
@@ -12,6 +16,18 @@ const SignupPages = () => {
   const [signup] = useSignupMutation();
   const router = useRouter();
   const [error, setError] = useState("");
+  const [googleSignIn] = useGoogleSignInMutation();
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      await googleSignIn({ access_token: codeResponse.access_token }).unwrap();
+
+      router.push("/");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +56,10 @@ const SignupPages = () => {
             Enter your information to create account
           </p>
         </div>
-        <button className="flex items-center justify-center gap-2.5 py-4 border-1 rounded-[10px] border-[#E5E5E5] cursor-pointer">
+        <button
+          className="flex items-center justify-center gap-2.5 py-4 border-1 rounded-[10px] border-[#E5E5E5] cursor-pointer"
+          onClick={() => googleLogin()}
+        >
           <img src="/icons/google.svg" alt="Google" />
           <span>Continue with Google</span>
         </button>
@@ -92,7 +111,9 @@ const SignupPages = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <p className="text-[#BD4545] p-2.5 bg-[#FDEAEA] text-sm">{error}</p>}
+          {error && (
+            <p className="text-[#BD4545] p-2.5 bg-[#FDEAEA] text-sm">{error}</p>
+          )}
           <button
             className="w-full h-[42px] bg-[#6784F6] text-white font-semibold rounded-[10px] cursor-pointer mt-3"
             type="submit"

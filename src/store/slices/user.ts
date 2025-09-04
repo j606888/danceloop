@@ -28,6 +28,14 @@ const UserSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    googleSignIn: builder.mutation<null, { access_token: string }>({
+      query: (data) => ({
+        url: "/auth/google",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
     me: builder.query<any, void>({
       query: () => ({
         url: "/me",
@@ -43,4 +51,5 @@ export const {
   useLoginMutation,
   useMeQuery,
   useLogoutMutation,
+  useGoogleSignInMutation,
 } = UserSlice;
