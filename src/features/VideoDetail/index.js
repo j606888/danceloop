@@ -22,7 +22,7 @@ export default function VideoDetail({ videoUid }) {
         className={`absolute left-3 top-3 z-20 opacity-50`}
       >
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.back()}
           className="rounded-full bg-white p-2 shadow"
         >
           <ChevronLeft className="h-5 w-5 text-black" />
