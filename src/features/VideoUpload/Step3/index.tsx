@@ -1,5 +1,6 @@
 import { Footer, Stepper } from "../shared";
-import { VideoDraft, Visibility } from "../videoDraft";
+import { VideoDraft } from "../videoDraft";
+import { Visibility } from "@/lib/constants";
 
 const PRIVACY_OPTIONS = [
   {
