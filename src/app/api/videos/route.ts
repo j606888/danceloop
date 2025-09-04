@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma, VideoState } from "@prisma/client";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,15 +10,13 @@ export async function GET(request: Request) {
   const recordType = searchParams.get("recordType");
 
   const where = {
+    state: VideoState.READY,
     ...(title ? { title: { contains: title, mode: Prisma.QueryMode.insensitive } } : {}),
     ...(dancerIds.length > 0 ? { dancers: { some: { dancerId: { in: dancerIds.map(Number) } } } } : {}),
     ...(danceStyle ? { danceStyle } : {}),
     ...(recordType ? { recordType } : {}),
   }
 
-  console.log({
-    where
-  })
   const videos = await prisma.video.findMany({
     where,
     orderBy: {

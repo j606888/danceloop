@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { useGetVideosQuery } from "@/store/slices/videos";
 import VideoPreview from "./VideoPreview";
-import VideoFilter from "./VideoFilter";
+import Searchbar from "./Searchbar";
+import ActiveFilters from "./ActiveFilters";
+import {
+  filterDraftReducer,
+  bindSetField,
+  initialFilterDraft,
+} from "./Searchbar/filterDraft";
 import { PulseLoader } from "react-spinners";
 
 const VideoList = () => {
-  const [filters, setFilters] = useState({
-    title: "",
-    dancerIds: [],
-    danceStyle: "",
-    recordType: "",
-  });
+  const [filters, dispatch] = useReducer(
+    filterDraftReducer,
+    initialFilterDraft
+  );
   const { data: videos, isLoading } = useGetVideosQuery(filters);
+  const setField = bindSetField(dispatch);
   const [viewType, setViewType] = useState("list");
 
   if (isLoading) {
@@ -24,12 +29,10 @@ const VideoList = () => {
 
   return (
     <>
-      <VideoFilter
-        filters={filters}
-        setFilters={setFilters}
-        viewType={viewType}
-        setViewType={setViewType}
-      />
+      <div className="sticky top-[56px] p-2.5 bg-[#F1F1F1] flex flex-col gap-2.5 z-20">
+        <Searchbar setField={setField} filters={filters} viewType={viewType} onViewTypeChange={setViewType} />
+        <ActiveFilters filters={filters} setField={setField} />
+      </div>
       <div
         className={`relative ${
           viewType === "grid"
