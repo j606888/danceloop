@@ -12,7 +12,6 @@ const VideoPreview = ({
 }) => {
   const duration = format(video.duration * 1000, "m:ss");
   const router = useRouter();
-  const missingInfo = !video.danceStyle &&  video.dancerNames.length === 0;
 
   if (viewType === "grid") {
     return (

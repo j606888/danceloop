@@ -11,7 +11,6 @@ export type Video = {
   duration: number;
   visibility: Visibility;
   filename: string;
-  dancerNames: string[];
   preview: string;
   recordedAt: string;
   danceStyle: string;
