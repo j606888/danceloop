@@ -52,7 +52,7 @@ const LoginPage = () => {
           className="flex items-center justify-center gap-2.5 py-4 border-1 rounded-[10px] border-[#E5E5E5] cursor-pointer"
           onClick={() => googleLogin()}
         >
-          <img src="/icons/google.svg" alt="Google" />
+          <img src="/icons/Google.svg" alt="Google" />
           <span>Login with Google</span>
         </button>
         <div className="flex items-center gap-3">
