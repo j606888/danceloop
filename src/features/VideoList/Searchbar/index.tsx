@@ -45,6 +45,11 @@ const Searchbar = ({
     ? dancers?.filter((d) => d.name.toLowerCase().includes(q)).slice(0, 3)
     : [];
 
+  function handleViewTypeChange(event: React.MouseEvent<SVGSVGElement>, viewType: "list" | "grid") {
+    event.stopPropagation();
+    onViewTypeChange(viewType);
+  }
+
   return (
     <div
       ref={rootRef}
@@ -74,12 +79,12 @@ const Searchbar = ({
         <div className="rounded-[10px] bg-[#EFC22F] p-2 flex items-center cursor-pointer">
         {viewType === "grid" ? (
           <LayoutList
-            onClick={() => onViewTypeChange("list")}
+            onClick={(e: React.MouseEvent<SVGSVGElement>) => handleViewTypeChange(e, "list")}
             className="text-white w-4 h-4"
           />
         ) : (
           <Grid3X3
-            onClick={() => onViewTypeChange("grid")}
+            onClick={(e: React.MouseEvent<SVGSVGElement>) => handleViewTypeChange(e, "grid")}
             className="text-white w-4 h-4"
           />
         )}
