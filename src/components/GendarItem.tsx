@@ -14,7 +14,7 @@ export const DancerBadge = ({
 }) => {
   return (
     <div
-      className={`flex gap-1.5 justify-center items-center px-2 ${size === 'sm' ? 'h-[28px]' : 'h-[32px]'} rounded-full ${
+      className={`flex justify-center items-center px-2 ${size === 'sm' ? 'gap-1 h-[28px]' : 'gap-1.5 h-[32px]'} rounded-full ${
         dancer.gender === "male" ? "bg-[#6784F6]/10" : "bg-[#DD886F]/10"
       } ${className}`}
     >

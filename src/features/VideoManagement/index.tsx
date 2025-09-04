@@ -24,7 +24,7 @@ const VideoManagement = () => {
 
   return (
     <>
-      <div className="sticky top-[56px] p-2.5 bg-[#F1F1F1] flex flex-col gap-2.5 z-100">
+      <div className="sticky top-[56px] p-2.5 bg-[#F1F1F1] flex flex-col gap-2.5 z-20">
         <Searchbar setField={setField} filters={filters} />
         <ActiveFilters filters={filters} setField={setField} />
       </div>

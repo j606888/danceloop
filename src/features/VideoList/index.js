@@ -12,7 +12,7 @@ const VideoList = () => {
     recordType: "",
   });
   const { data: videos, isLoading } = useGetVideosQuery(filters);
-  const [viewType, setViewType] = useState("grid");
+  const [viewType, setViewType] = useState("list");
 
   if (isLoading) {
     return (
@@ -34,7 +34,7 @@ const VideoList = () => {
         className={`relative ${
           viewType === "grid"
             ? "grid grid-cols-3 gap-[3px]"
-            : "flex flex-col gap-2 py-1"
+            : "py-1"
         }`}
       >
         {videos?.result?.map((video) => (

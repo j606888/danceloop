@@ -33,10 +33,10 @@ export async function GET(request: Request) {
     },
   });
 
-  const videosWithDancerNames = videos.map((video) => ({
+  const videosWithDancers = videos.map((video) => ({
     ...video,
-    dancerNames: video.dancers.map((dancer) => dancer.dancer.name),
+    dancers: video.dancers.map((dancer) => dancer.dancer),
   }));
 
-  return NextResponse.json({ result: videosWithDancerNames });
+  return NextResponse.json({ result: videosWithDancers });
 }

@@ -1,3 +1,4 @@
+import VideoCard from "@/components/VideoCard";
 import { Video } from "@/store/slices/videos";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -35,33 +36,10 @@ const VideoPreview = ({
 
   return (
     <div
-      className="relative flex gap-2 items-start px-2"
+      className="relative flex gap-1 px-2 w-full"
       onClick={() => router.push(`/video/${video.uid}`)}
     >
-      <div className="relative w-24 h-24 flex-shrink-0">
-        <img
-          src={video.thumbnail}
-          alt={video.uid}
-          className="w-full h-full object-cover rounded-md "
-        />
-        <div className="absolute bottom-1 right-1 text-white p-1 text-xs font-medium bg-black/50 rounded-md">
-          {duration}
-        </div>
-      </div>
-      <div className="flex flex-col h-full justify-between py-2 gap-1">
-        <div className="text-base text-gray-900">
-          {video.title}
-        </div>
-        <div className="text-sm text-gray-400">
-          {missingInfo ? (
-            "還沒整理"
-          ) : (
-            <>
-              {video.danceStyle} | {video.dancerNames?.join(" & ")}
-            </>
-          )}
-        </div>
-      </div>
+      <VideoCard video={video} />
     </div>
   );
 };
