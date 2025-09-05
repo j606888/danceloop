@@ -1,8 +1,11 @@
 import { Folder, Dot, ChevronRight } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 const PlaylistCard = () => {
+  const publicId = "ABCD1234"
+  const router = useRouter();
+
   return (
-      <div className="flex items-center gap-3 pb-2 border-b border-[#F2F2F2] pt-2 last:border-b-0">
+      <div className="flex items-center gap-3 pb-2 border-b border-[#F2F2F2] pt-2 last:border-b-0" onClick={() => router.push(`/playlists/${publicId}`)}>
         <div className="flex items-center justify-center w-16 h-16 rounded-[4px] bg-[#555555]/12">
           <Folder className="w-7 h-7 text-[#555555]" strokeWidth={2.5}/>
         </div>

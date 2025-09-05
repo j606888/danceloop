@@ -8,10 +8,11 @@ interface BottomSheetDialogProps {
   children: React.ReactNode;
   title: string;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   isLoading?: boolean;
   submitText?: string;
   disabled?: boolean;
+  withMinHeight?: boolean;
 }
 
 const Drawer = ({
@@ -22,6 +23,7 @@ const Drawer = ({
   children,
   isLoading,
   disabled = false,
+  withMinHeight = true,
   submitText = "CREATE",
 }: BottomSheetDialogProps) => {
   return (
@@ -39,7 +41,7 @@ const Drawer = ({
 
           {/* Dialog content */}
           <motion.div
-            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-white shadow-xl p-4 min-h-70 flex flex-col "
+            className={`fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-white shadow-xl p-4 flex flex-col ${withMinHeight ? `min-h-70` : ""}`}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -57,19 +59,21 @@ const Drawer = ({
             <div className="max-h-[60vh] overflow-y-auto">
               {children}
             </div>
-            <div className="mt-auto w-full">
-              <button
-                disabled={disabled}
-                type="submit"
-                className={`mt-auto w-full bg-[#6784F6] text-white font-semibold py-2 rounded flex items-center justify-center gap-2 cursor-pointer hover:bg-[#6784F6]/80 disabled:opacity-50 disabled:cursor-not-allowed ${
-                  isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => !isLoading && onSubmit()}
-              >
-                <span>{submitText}</span>
-                {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-              </button>
-            </div>
+            {onSubmit && (
+              <div className="mt-auto w-full">
+                <button
+                  disabled={disabled}
+                  type="submit"
+                  className={`mt-auto w-full bg-[#6784F6] text-white font-semibold py-2 rounded flex items-center justify-center gap-2 cursor-pointer hover:bg-[#6784F6]/80 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    isLoading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => !isLoading && onSubmit()}
+                >
+                  <span>{submitText}</span>
+                  {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                </button>
+              </div>
+            )}
           </motion.div>
         </>
       )}

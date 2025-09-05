@@ -51,3 +51,21 @@ export const RECORD_TYPES = [
     value: 'other'
   }
 ]
+
+export const PLAYLIST_VISIBILITIES = [
+  {
+    label: "私人",
+    value: "private",
+    description: "只有你或是追蹤的人能觀看",
+  },
+  {
+    label: "不公開",
+    value: "unlisted",
+    description: "知道影片連結的人都能觀看清單內的影片",
+  },
+  {
+    label: "公開",
+    value: "public",
+    description: "所有人都能觀看這個清單內的影片",
+  },
+];

@@ -1,26 +1,20 @@
-import { Plus } from "lucide-react";
+'use client'
+
 import Drawer from "@/components/Drawer";
 import { useState } from "react";
 import { PLAYLIST_VISIBILITIES } from "@/lib/constants";
 
-const NewPlaylist = () => {
-  const [open, setOpen] = useState(false);
+
+const EditDrawer = ({ open, onClose }: { open: boolean, onClose: () => void }) => {
   const [title, setTitle] = useState("");
   const [visibility, setVisibility] = useState("private");
 
   return (
-    <>
-      <div
-        className="cursor-pointer rounded-full w-8 h-8 flex items-center justify-center bg-[#f2f2f2]"
-        onClick={() => setOpen(true)}
-      >
-        <Plus className="w-4 h-4" />
-      </div>
-      <Drawer
+    <Drawer
         open={open}
-        onClose={() => setOpen(false)}
-        title="新增播放清單"
-        onSubmit={() => setOpen(false)}
+        onClose={onClose}
+        title="編輯清單"
+        onSubmit={onClose}
       >
         <div className="mb-3">
           <label className="block text-[#21212] text-sm font-medium mb-1">
@@ -71,8 +65,7 @@ const NewPlaylist = () => {
           </div>
         </div>
       </Drawer>
-    </>
   );
 };
 
-export default NewPlaylist;
+export default EditDrawer;
