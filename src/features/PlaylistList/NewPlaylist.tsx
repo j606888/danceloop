@@ -1,12 +1,25 @@
 import { Plus } from "lucide-react";
 import Drawer from "@/components/Drawer";
 import { useState } from "react";
-import { PLAYLIST_VISIBILITIES } from "@/lib/constants";
+import {
+  PLAYLIST_VISIBILITIES,
+  PLAYLIST_VISIBILITY_OPTIONS,
+  PlaylistVisibility,
+} from "@/lib/constants";
+import { useCreateUserPlaylistMutation } from "@/store/slices/user/playlists";
 
 const NewPlaylist = () => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
-  const [visibility, setVisibility] = useState("private");
+  const [visibility, setVisibility] = useState<PlaylistVisibility>(
+    PLAYLIST_VISIBILITIES.PRIVATE
+  );
+  const [createUserPlaylist, { isLoading }] = useCreateUserPlaylistMutation();
+
+  const handleSubmit = async () => {
+    await createUserPlaylist({ title, visibility });
+    setOpen(false);
+  };
 
   return (
     <>
@@ -20,7 +33,8 @@ const NewPlaylist = () => {
         open={open}
         onClose={() => setOpen(false)}
         title="新增播放清單"
-        onSubmit={() => setOpen(false)}
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
       >
         <div className="mb-3">
           <label className="block text-[#21212] text-sm font-medium mb-1">
@@ -41,7 +55,7 @@ const NewPlaylist = () => {
             </label>
           </div>
           <div className="flex flex-col gap-3">
-            {PLAYLIST_VISIBILITIES.map((option) => (
+            {PLAYLIST_VISIBILITY_OPTIONS.map((option) => (
               <div
                 key={option.value}
                 onClick={() => setVisibility(option.value)}

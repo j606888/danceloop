@@ -1,0 +1,64 @@
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { decodeAuthToken } from "@/lib/auth";
+import { nanoid } from "nanoid";
+import { MemberRole } from "@prisma/client";
+
+export async function GET(request: Request) {
+  const { userId } = await decodeAuthToken();
+  if (!userId) {
+    return NextResponse.json({ error: "User not found" }, { status: 400 });
+  }
+
+  const playlistMembers = await prisma.playlistMember.findMany({
+    where: { userId, role: MemberRole.OWNER },
+  });
+
+  const playlists = await prisma.playlist.findMany({
+    where: { id: { in: playlistMembers.map((member) => member.playlistId) } },
+    include: {
+      user: {
+        select: {
+          name: true
+        }
+      },
+    }
+  });
+
+  return NextResponse.json({ result: playlists });
+}
+
+export async function POST(request: Request) {
+  const { userId } = await decodeAuthToken();
+
+  if (!userId) {
+    return NextResponse.json({ error: "User not found" }, { status: 400 });
+  }
+
+  const publicId = await getUniquePublicId();
+
+  const { title, visibility } = await request.json();
+
+  const playlist = await prisma.$transaction(async (tx) => {
+    const p = await tx.playlist.create({
+      data: { userId, title, visibility, publicId },
+    });
+    await tx.playlistMember.create({
+      data: { playlistId: p.id, userId, role: MemberRole.OWNER },
+    });
+    return p;
+  });
+
+  return NextResponse.json(playlist);
+}
+
+async function getUniquePublicId() {
+  const publicId = nanoid(8);
+  const existingPlaylist = await prisma.playlist.findUnique({
+    where: { publicId },
+  });
+  if (existingPlaylist) {
+    return await getUniquePublicId();
+  }
+  return publicId;
+}

@@ -2,7 +2,7 @@
 
 import Drawer from "@/components/Drawer";
 import { useState } from "react";
-import { PLAYLIST_VISIBILITIES } from "@/lib/constants";
+import { PLAYLIST_VISIBILITY_OPTIONS } from "@/lib/constants";
 
 
 const EditDrawer = ({ open, onClose }: { open: boolean, onClose: () => void }) => {
@@ -35,7 +35,7 @@ const EditDrawer = ({ open, onClose }: { open: boolean, onClose: () => void }) =
             </label>
           </div>
           <div className="flex flex-col gap-3">
-            {PLAYLIST_VISIBILITIES.map((option) => (
+            {PLAYLIST_VISIBILITY_OPTIONS.map((option) => (
               <div
                 key={option.value}
                 onClick={() => setVisibility(option.value)}

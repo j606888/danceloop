@@ -4,7 +4,8 @@ export const TAG_TYPES = [
   "AdminVideo",
   "Dancers",
   "Video",
-  "User"
+  "User",
+  "Playlist",
 ]
 
 export const api = createApi({
