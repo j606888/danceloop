@@ -8,6 +8,14 @@ const CUSTOMER = "customer-ae2phsrffw6ivfgf.cloudflarestream.com";
 export default function VideoDetail({ videoUid }) {
   const router = useRouter();
 
+  function handleBack() {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-black">
       <iframe
@@ -22,7 +30,7 @@ export default function VideoDetail({ videoUid }) {
         className={`absolute left-3 top-3 z-20 opacity-50`}
       >
         <button
-          onClick={() => router.back()}
+          onClick={handleBack}
           className="rounded-full bg-white p-2 shadow"
         >
           <ChevronLeft className="h-5 w-5 text-black" />

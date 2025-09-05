@@ -13,6 +13,18 @@ enum VideoState {
   ABANDONED
 }
 
+enum PlaylistVisibility {
+  PRIVATE
+  UNLISTED
+  PUBLIC
+}
+
+enum MemberRole {
+  OWNER
+  COLLABORATOR
+  FOLLOWER
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -80,6 +92,8 @@ model User {
   updatedAt DateTime @updatedAt
   videos Video[]
   thirdPartyAccounts ThirdPartyAccount[]
+  playlists Playlist[]
+  playlistMembers PlaylistMember[]
 }
 
 model ThirdPartyAccount {
@@ -93,4 +107,27 @@ model ThirdPartyAccount {
   user User @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerId])
+}
+
+model Playlist {
+  id Int @id @default(autoincrement())
+  publicId String @unique
+  title String
+  visibility PlaylistVisibility @default(PRIVATE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  members PlaylistMember[]
+}
+
+model PlaylistMember {
+  id Int @id @default(autoincrement())
+  playlistId Int
+  userId Int
+  role MemberRole @default(FOLLOWER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  playlist Playlist @relation(fields: [playlistId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }

@@ -7,7 +7,7 @@ import {
   CloudUpload,
   House,
   SquarePlay,
-  Heart,
+  ListVideo,
   CircleUser,
   LogOutIcon,
 } from "lucide-react";
@@ -18,24 +18,29 @@ import { useRouter } from "next/navigation";
 const MENU_ITEMS = [
   {
     icon: House,
-    label: "Home",
+    label: "首頁",
     href: "/",
   },
   {
     icon: SquarePlay,
-    label: "My videos",
+    label: "我的影片",
     href: "/video/management",
   },
   {
-    icon: Heart,
-    label: "Favorites",
-    href: "/favorites",
+    icon: ListVideo,
+    label: "播放清單",
+    href: "/playlists",
   },
-  {
-    icon: CircleUser,
-    label: "Profile",
-    href: "/profile",
-  },
+  // {
+  //   icon: Heart,
+  //   label: "收藏",
+  //   href: "/favorites",
+  // },
+  // {
+  //   icon: CircleUser,
+  //   label: "個人資料",
+  //   href: "/profile",
+  // },
 ];
 
 const Sidebar = ({ isLogin }: { isLogin: boolean }) => {
@@ -78,7 +83,7 @@ const Sidebar = ({ isLogin }: { isLogin: boolean }) => {
                   <Link href="/upload-video">
                     <div className="flex items-center justify-center align-center gap-2 py-3 border-1 text-[#6784F6] border-[#6784F6] rounded-full font-medium">
                       <CloudUpload />
-                      <span>Upload Video</span>
+                      <span>上傳影片</span>
                     </div>
                   </Link>
                   <div className="border-b border-[#eeeeee] my-4"></div>
@@ -107,7 +112,7 @@ const Sidebar = ({ isLogin }: { isLogin: boolean }) => {
                     onClick={handleLogout}
                   >
                     <LogOutIcon />
-                    <span>Logout</span>
+                    <span>登出</span>
                   </div>
                 )}
                 <div className="flex items-center mt-auto gap-3 px-3 rounded-xl text-[#777777] text-xs">
