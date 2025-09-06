@@ -7,6 +7,7 @@ export type PlaylistWithUser = Playlist & {
   user: {
     name: string;
   };
+  videoCount: number;
 };
 
 const userPlaylistsSlice = api.injectEndpoints({

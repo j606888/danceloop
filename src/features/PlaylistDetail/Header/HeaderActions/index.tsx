@@ -30,11 +30,11 @@ const HeaderActions = () => {
   const router = useRouter();
 
   function handleBack() {
-    if (window.history.length > 1) {
-      router.back();
-    } else {
+    // if (window.history.length > 1) {
+    //   router.back();
+    // } else {
       router.push("/playlists");
-    }
+    // }
   }
 
   function handleOpenDrawer(drawer: "share" | "collaborate" | "edit") {

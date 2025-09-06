@@ -22,10 +22,20 @@ export async function GET(request: Request) {
           name: true
         }
       },
+      _count: {
+        select: {
+          videos: true,
+        }
+      }
     }
   });
 
-  return NextResponse.json({ result: playlists });
+  const formattedPlaylists = playlists.map((playlist) => ({
+    ...playlist,
+    videoCount: playlist._count.videos,
+  }));
+
+  return NextResponse.json({ result: formattedPlaylists });
 }
 
 export async function POST(request: Request) {

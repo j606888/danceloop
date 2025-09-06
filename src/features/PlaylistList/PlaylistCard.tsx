@@ -19,7 +19,7 @@ const PlaylistCard = ({ playlist }: { playlist: PlaylistWithUser }) => {
         <div className="flex items-center gap-0.5 text-sm text-[#999999]">
           <span>{playlist.user.name}</span>
           <Dot className="w-4 h-4" strokeWidth={5} />
-          <span>0 部影片</span>
+          <span>{playlist.videoCount} 部影片</span>
           <Dot className="w-4 h-4" strokeWidth={5} />
           <span>{PLAYLIST_VISIBILITY_LABELS[playlist.visibility]}</span>
         </div>
