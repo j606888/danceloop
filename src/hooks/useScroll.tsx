@@ -20,7 +20,7 @@ function useScroll() {
         container.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [containerRef, isScrolled]);
+  }, []);
 
   return {
     isScrolled,

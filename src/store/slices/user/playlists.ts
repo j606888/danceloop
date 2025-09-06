@@ -1,6 +1,7 @@
 import { api } from "@/store/api";
 import { Playlist } from "@prisma/client";
 import { PlaylistVisibility } from "@/lib/constants";
+import { Video } from "../videos";
 
 export type PlaylistWithUser = Playlist & {
   user: {
@@ -38,6 +39,21 @@ const userPlaylistsSlice = api.injectEndpoints({
       }),
       providesTags: ["Playlist"],
     }),
+    addVideoToPlaylist: builder.mutation<void, { publicId: string; videoUid: string }>({
+      query: ({ publicId, videoUid }) => ({
+        url: `/user/playlists/${publicId}/videos`,
+        method: "POST",
+        body: { videoUid },
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
+    getUserPlaylistVideos: builder.query<{ result: Video[] }, { publicId: string }>({
+      query: ({ publicId }) => ({
+        url: `/user/playlists/${publicId}/videos`,
+        method: "GET",
+      }),
+      providesTags: ["Playlist"],
+    }),
   }),
 });
 
@@ -45,4 +61,6 @@ export const {
   useCreateUserPlaylistMutation,
   useGetUserPlaylistsQuery,
   useGetUserPlaylistQuery,
+  useAddVideoToPlaylistMutation,
+  useGetUserPlaylistVideosQuery,
 } = userPlaylistsSlice;

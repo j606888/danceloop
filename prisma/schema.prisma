@@ -54,6 +54,7 @@ model Video {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   dancers VideoDancer[]
+  playlists PlaylistVideo[]
 }
 
 model Dancer {
@@ -119,6 +120,7 @@ model Playlist {
   userId Int
   user User @relation(fields: [userId], references: [id])
   members PlaylistMember[]
+  videos PlaylistVideo[]
 }
 
 model PlaylistMember {
@@ -130,4 +132,14 @@ model PlaylistMember {
   updatedAt DateTime @updatedAt
   playlist Playlist @relation(fields: [playlistId], references: [id])
   user User @relation(fields: [userId], references: [id])
+}
+
+model PlaylistVideo {
+  id Int @id @default(autoincrement())
+  playlistId Int
+  videoId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  playlist Playlist @relation(fields: [playlistId], references: [id])
+  video Video @relation(fields: [videoId], references: [id])
 }

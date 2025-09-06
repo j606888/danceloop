@@ -4,7 +4,7 @@ import { useGetDancersQuery } from "@/store/slices/dancers";
 import { Stepper, Footer } from "../shared";
 import DancerList from "./DancerList";
 import TagInput from "./TagInput";
-import useScroll from "./useScroll";
+import useScroll from "@/hooks/useScroll";
 import NewDancerBtn from "./NewDancerBtn";
 import NewDancerForm from "./NewDancerForm";
 import { VideoDraft } from "../videoDraft";

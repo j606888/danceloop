@@ -4,7 +4,7 @@ import HeaderActions from "./HeaderActions";
 import Followers from "./Followers";
 import MetaInfo from "./MetaInfo";
 
-const Header = ({ playlist }: { playlist: PlaylistWithUser }) => {
+const Header = ({ playlist, videoCount }: { playlist: PlaylistWithUser, videoCount: number }) => {
   return (
     <div className="bg-[#F2F2F2]">
       <HeaderActions />
@@ -14,7 +14,7 @@ const Header = ({ playlist }: { playlist: PlaylistWithUser }) => {
           <Collaborators playlist={playlist}/>
           <Followers />
         </div>
-        <MetaInfo playlist={playlist}/>
+        <MetaInfo playlist={playlist} videoCount={videoCount}/>
       </div>
     </div>
     );
