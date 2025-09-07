@@ -11,9 +11,17 @@ const userVideosSlice = api.injectEndpoints({
         danceStyle?: string;
         recordType?: string;
         dancerIds?: number[];
+        excludePlaylistId?: string;
       }
     >({
-      query: ({ state, title, danceStyle, recordType, dancerIds } = {}) => {
+      query: ({
+        state,
+        title,
+        danceStyle,
+        recordType,
+        dancerIds,
+        excludePlaylistId,
+      } = {}) => {
         const query = new URLSearchParams();
         if (state) {
           query.set("state", state);
@@ -29,6 +37,9 @@ const userVideosSlice = api.injectEndpoints({
         }
         if (dancerIds && dancerIds.length > 0) {
           query.set("dancerIds", dancerIds.join(","));
+        }
+        if (excludePlaylistId) {
+          query.set("excludePlaylistId", excludePlaylistId);
         }
         const qs = query.toString();
         return `/user/videos${qs ? `?${qs}` : ""}`;

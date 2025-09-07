@@ -16,7 +16,7 @@ const PlaylistAddVideo = ({ publicId }: { publicId: string }) => {
     filterDraftReducer,
     initialFilterDraft
   );
-  const { data, isLoading } = useGetUserVideosQuery(filters);
+  const { data, isLoading } = useGetUserVideosQuery({ ...filters, excludePlaylistId: publicId });
   const videos = data?.result;
   const setField = bindSetField(dispatch);
   const [addVideoToPlaylist] = useAddVideoToPlaylistMutation();

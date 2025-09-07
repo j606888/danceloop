@@ -46,7 +46,7 @@ const userPlaylistsSlice = api.injectEndpoints({
         method: "POST",
         body: { videoUid },
       }),
-      invalidatesTags: ["Playlist"],
+      invalidatesTags: ["Playlist", "Video"],
     }),
     getUserPlaylistVideos: builder.query<{ result: Video[] }, { publicId: string }>({
       query: ({ publicId }) => ({

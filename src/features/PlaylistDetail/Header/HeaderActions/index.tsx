@@ -14,7 +14,7 @@ import EditDrawer from "./EditDrawer";
 import CollaboratorDrawer from "./CollaboratorDrawer";
 import ShareDrawer from "./ShareDrawer";
 
-const HeaderActions = () => {
+const HeaderActions = ({ publicId }: { publicId: string }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDrawer, setOpenDrawer] = useState<
     "share" | "collaborate" | "edit" | null
@@ -35,6 +35,10 @@ const HeaderActions = () => {
     // } else {
       router.push("/playlists");
     // }
+  }
+
+  function handleAddToPlaylist() {
+    router.push(`/playlists/${publicId}/add-video`);
   }
 
   function handleOpenDrawer(drawer: "share" | "collaborate" | "edit") {
@@ -77,7 +81,7 @@ const HeaderActions = () => {
             </ListItemIcon>
             <ListItemText>分享清單</ListItemText>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleAddToPlaylist}>
             <ListItemIcon>
               <CirclePlus className="w-5 h-5" />
             </ListItemIcon>

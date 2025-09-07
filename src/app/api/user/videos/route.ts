@@ -10,6 +10,7 @@ export async function GET(request: Request) {
   const danceStyle = searchParams.get("danceStyle");
   const recordType = searchParams.get("recordType");
   const dancerIds = searchParams.get("dancerIds")?.split(",") || [];
+  const excludePlaylistId = searchParams.get("excludePlaylistId");
 
   const { userId } = await decodeAuthToken()
   const where: any = { userId };
@@ -29,6 +30,24 @@ export async function GET(request: Request) {
   if (dancerIds.length > 0) {
     where.dancers = { some: { dancerId: { in: dancerIds.map(Number) } } };
   }
+
+  let excludedVideoIds: number[] = [];
+  if (excludePlaylistId) {
+    const playlist = await prisma.playlist.findUnique({
+      where: { publicId: excludePlaylistId },
+      include: {
+        videos: true,
+      }
+    })
+    if (playlist) {
+      excludedVideoIds = playlist.videos.map((video) => video.videoId);
+    }
+  }
+
+  if (excludedVideoIds.length > 0) {
+    where.id = { notIn: excludedVideoIds };
+  }
+  
   const videos = await prisma.video.findMany({
     where,
     orderBy: {
