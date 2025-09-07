@@ -22,14 +22,14 @@ const MENU_ITEMS = [
     href: "/",
   },
   {
-    icon: SquarePlay,
-    label: "我的影片",
-    href: "/video/management",
-  },
-  {
     icon: ListVideo,
     label: "播放清單",
     href: "/playlists",
+  },
+  {
+    icon: SquarePlay,
+    label: "我的影片",
+    href: "/video/management",
   },
   // {
   //   icon: Heart,

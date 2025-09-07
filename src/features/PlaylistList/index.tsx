@@ -3,12 +3,13 @@
 import { useState } from "react";
 import PlaylistHeader from "./PlaylistHeader";
 import PlaylistCard from "./PlaylistCard";
-import { useGetUserPlaylistsQuery } from "@/store/slices/user/playlists";
+import { useGetUserPlaylistsQuery, PlaylistType } from "@/store/slices/user/playlists";
 
-export type Tab = "mine" | "followed" | "explore";
+export type Tab = PlaylistType;
+
 const PlaylistList = () => {
   const [activeTab, setActiveTab] = useState<Tab>("mine");
-  const { data: playlistsData } = useGetUserPlaylistsQuery();
+  const { data: playlistsData } = useGetUserPlaylistsQuery({ type: activeTab });
   const playlists = playlistsData?.result || []
 
   return (

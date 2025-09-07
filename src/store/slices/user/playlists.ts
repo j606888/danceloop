@@ -1,5 +1,5 @@
 import { api } from "@/store/api";
-import { Playlist } from "@prisma/client";
+import { MemberRole, Playlist } from "@prisma/client";
 import { PlaylistVisibility } from "@/lib/constants";
 import { Video } from "../videos";
 
@@ -7,15 +7,23 @@ export type PlaylistWithUser = Playlist & {
   user: {
     name: string;
   };
+  members: {
+    userId: number;
+    name: string;
+    role: MemberRole;
+  }[]
   videoCount: number;
 };
 
+export type PlaylistType = "mine" | "followed" | "explore";
+
 const userPlaylistsSlice = api.injectEndpoints({
   endpoints: (builder) => ({
-    getUserPlaylists: builder.query<{ result: PlaylistWithUser[] }, void>({
-      query: () => ({
+    getUserPlaylists: builder.query<{ result: PlaylistWithUser[] }, { type: PlaylistType }>({
+      query: ({ type }) => ({
         url: "/user/playlists",
         method: "GET",
+        params: { type },
       }),
       providesTags: ["Playlist"],
     }),
@@ -46,7 +54,7 @@ const userPlaylistsSlice = api.injectEndpoints({
         method: "POST",
         body: { videoUid },
       }),
-      invalidatesTags: ["Playlist"],
+      invalidatesTags: ["Playlist", "Video"],
     }),
     getUserPlaylistVideos: builder.query<{ result: Video[] }, { publicId: string }>({
       query: ({ publicId }) => ({
@@ -54,6 +62,20 @@ const userPlaylistsSlice = api.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Playlist"],
+    }),
+    followPlaylist: builder.mutation<void, { publicId: string }>({
+      query: ({ publicId }) => ({
+        url: `/user/playlists/${publicId}/follow`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
+    unfollowPlaylist: builder.mutation<void, { publicId: string }>({
+      query: ({ publicId }) => ({
+        url: `/user/playlists/${publicId}/unfollow`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Playlist"],
     }),
   }),
 });
@@ -64,4 +86,6 @@ export const {
   useGetUserPlaylistQuery,
   useAddVideoToPlaylistMutation,
   useGetUserPlaylistVideosQuery,
+  useFollowPlaylistMutation,
+  useUnfollowPlaylistMutation,
 } = userPlaylistsSlice;
