@@ -4,7 +4,7 @@ const UserSlice = api.injectEndpoints({
   endpoints: (builder) => ({
     signup: builder.mutation<
       null,
-      { name: string; email: string; password: string }
+      { id: number; name: string; email: string; password: string }
     >({
       query: (data) => ({
         url: "/signup",

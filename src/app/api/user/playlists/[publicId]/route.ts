@@ -16,9 +16,31 @@ export async function GET(request: Request, { params }: { params: Promise<{ publ
         select: {
           name: true,
         },
-      }
+      },
     },
   });
 
-  return NextResponse.json(playlist);
+  if (!playlist) {
+    return NextResponse.json({ error: "Playlist not found" }, { status: 400 });
+  }
+
+  const playlistMembers = await prisma.playlistMember.findMany({
+    where: { playlistId: playlist.id},
+    include: {
+      user: {
+        select: {
+          name: true,
+          id: true
+        },
+      },
+    },
+  });
+
+  const formattedPlaylistMembers = playlistMembers.map((member) => ({
+    ...member,
+    userId: member.user.id,
+    name: member.user.name,
+  }));
+
+  return NextResponse.json({ ...playlist, members: formattedPlaylistMembers });
 }
