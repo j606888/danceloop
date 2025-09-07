@@ -1,16 +1,18 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const CUSTOMER = "customer-ae2phsrffw6ivfgf.cloudflarestream.com";
 
 export default function VideoDetail({ videoUid }) {
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
   const router = useRouter();
 
   function handleBack() {
-    if (window.history.length > 1) {
-      router.back();
+    if (from) {
+      router.push(from);
     } else {
       router.push("/");
     }

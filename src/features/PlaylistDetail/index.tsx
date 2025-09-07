@@ -10,6 +10,7 @@ const PlaylistDetail = ({ publicId }: { publicId: string }) => {
   const { data: playlist, isLoading } = useGetUserPlaylistQuery({ publicId });
   const { data: videos, isLoading: isVideosLoading } =
     useGetUserPlaylistVideosQuery({ publicId });
+  const from = `/playlists/${publicId}`
 
   if (isLoading || isVideosLoading) return <div>Loading...</div>;
   if (!playlist) return <div>No playlist found</div>;
@@ -22,7 +23,7 @@ const PlaylistDetail = ({ publicId }: { publicId: string }) => {
           <div className="p-2">
             {videos?.result?.map((video) => (
               <div className="flex" key={video.id}>
-                <VideoCard key={video.id} video={video} />
+                <VideoCard key={video.id} video={video} from={from} />
               </div>
             ))}
           </div>

@@ -7,13 +7,16 @@ import SecondaryInfo from "./SecondaryInfo";
 const VideoCard = ({
   video,
   showVisibility = false,
+  from,
 }: {
   video: Video;
   showVisibility?: boolean;
+  from?: string;
 }) => {
+
   return (
     <div className="flex flex-1 gap-2 py-2 border-b border-gray-200 w-[calc(100%-20px-92px-8px-8px)]">
-      <PreviewImage video={video} />
+      <PreviewImage video={video} from={from} />
       <div className="flex flex-col justify-between flex-1 w-[calc(100%-20px-92px-8px-8px)]">
         <div className="relative flex flex-col gap-1 p-1">
           <DateAndVisibility video={video} showVisibility={showVisibility} />

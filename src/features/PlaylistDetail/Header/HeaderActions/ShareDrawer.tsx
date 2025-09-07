@@ -17,7 +17,7 @@ const ShareDrawer = ({
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleCopyLink = async () => {
-    // await navigator.clipboard.writeText(window.location.href);
+    await navigator.clipboard.writeText(window.location.href);
     setOpenSnackbar(true);
     onClose();
   };
