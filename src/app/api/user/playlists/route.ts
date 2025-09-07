@@ -4,30 +4,45 @@ import { decodeAuthToken } from "@/lib/auth";
 import { nanoid } from "nanoid";
 import { MemberRole } from "@prisma/client";
 
+type PlaylistType = "mine" | "followed" | "explore";
+
 export async function GET(request: Request) {
   const { userId } = await decodeAuthToken();
+  const { searchParams } = new URL(request.url);
+  const type = searchParams.get("type") as PlaylistType;
+
   if (!userId) {
     return NextResponse.json({ error: "User not found" }, { status: 400 });
   }
 
-  const playlistMembers = await prisma.playlistMember.findMany({
-    where: { userId, role: MemberRole.OWNER },
-  });
+  let playlistMembers: any[] = [];
+
+  if (type === "mine") {
+    playlistMembers = await prisma.playlistMember.findMany({
+      where: { userId, role: MemberRole.OWNER },
+    });
+  } else if (type === "followed") {
+    playlistMembers = await prisma.playlistMember.findMany({
+      where: { userId, role: MemberRole.FOLLOWER },
+    });
+  } else if (type === "explore") {
+    playlistMembers = [];
+  }
 
   const playlists = await prisma.playlist.findMany({
     where: { id: { in: playlistMembers.map((member) => member.playlistId) } },
     include: {
       user: {
         select: {
-          name: true
-        }
+          name: true,
+        },
       },
       _count: {
         select: {
           videos: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
   const formattedPlaylists = playlists.map((playlist) => ({

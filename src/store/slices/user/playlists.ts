@@ -15,12 +15,15 @@ export type PlaylistWithUser = Playlist & {
   videoCount: number;
 };
 
+export type PlaylistType = "mine" | "followed" | "explore";
+
 const userPlaylistsSlice = api.injectEndpoints({
   endpoints: (builder) => ({
-    getUserPlaylists: builder.query<{ result: PlaylistWithUser[] }, void>({
-      query: () => ({
+    getUserPlaylists: builder.query<{ result: PlaylistWithUser[] }, { type: PlaylistType }>({
+      query: ({ type }) => ({
         url: "/user/playlists",
         method: "GET",
+        params: { type },
       }),
       providesTags: ["Playlist"],
     }),
