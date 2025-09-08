@@ -60,7 +60,11 @@ const PlaylistMembers = ({ publicId }: { publicId: string }) => {
       <Header publicId={publicId} />
       <h3 className="px-3 py-2 text-[#343434] text-sm font-semibold">擁有者</h3>
       {isLoading ? <Skeleton /> : <UserIcon member={owner!} />}
-      <h3 className="px-3 py-2 text-[#343434] text-sm font-semibold">協作者</h3>
+      {collaborators.length > 0 && (
+        <h3 className="px-3 py-2 text-[#343434] text-sm font-semibold">
+          協作者
+        </h3>
+      )}
       <div>
         {isLoading ? (
           <Skeleton />
@@ -74,7 +78,11 @@ const PlaylistMembers = ({ publicId }: { publicId: string }) => {
           ))
         )}
       </div>
-      <h3 className="px-3 py-2 text-[#343434] text-sm font-semibold">追蹤中</h3>
+      {followers.length > 0 && (
+        <h3 className="px-3 py-2 text-[#343434] text-sm font-semibold">
+          追蹤中
+        </h3>
+      )}
       <div>
         {isLoading ? (
           <Skeleton />
