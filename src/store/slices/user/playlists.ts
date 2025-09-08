@@ -3,15 +3,16 @@ import { MemberRole, Playlist } from "@prisma/client";
 import { PlaylistVisibility } from "@/lib/constants";
 import { Video } from "../videos";
 
+export type Member = {
+  userId: number;
+  name: string;
+  role: MemberRole;
+}
 export type PlaylistWithUser = Playlist & {
   user: {
     name: string;
   };
-  members: {
-    userId: number;
-    name: string;
-    role: MemberRole;
-  }[]
+  members: Member[]
   videoCount: number;
 };
 
@@ -35,6 +36,14 @@ const userPlaylistsSlice = api.injectEndpoints({
         url: "/user/playlists",
         method: "POST",
         body: data,
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
+    updateUserPlaylist: builder.mutation<void, { publicId: string; title: string; visibility: PlaylistVisibility }>({
+      query: ({ publicId, title, visibility }) => ({
+        url: `/user/playlists/${publicId}`,
+        method: "PATCH",
+        body: { title, visibility },
       }),
       invalidatesTags: ["Playlist"],
     }),
@@ -77,6 +86,21 @@ const userPlaylistsSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["Playlist"],
     }),
+    updatePlaylistMemberRole: builder.mutation<void, { publicId: string; userId: string; role: MemberRole }>({
+      query: ({ publicId, userId, role }) => ({
+        url: `/user/playlists/${publicId}/members/${userId}`,
+        method: "PATCH",
+        body: { role },
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
+    removePlaylistMember: builder.mutation<void, { publicId: string; userId: string }>({
+      query: ({ publicId, userId }) => ({
+        url: `/user/playlists/${publicId}/members/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
   }),
 });
 
@@ -88,4 +112,7 @@ export const {
   useGetUserPlaylistVideosQuery,
   useFollowPlaylistMutation,
   useUnfollowPlaylistMutation,
+  useUpdatePlaylistMemberRoleMutation,
+  useRemovePlaylistMemberMutation,
+  useUpdateUserPlaylistMutation,
 } = userPlaylistsSlice;

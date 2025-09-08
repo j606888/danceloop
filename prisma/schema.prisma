@@ -25,6 +25,16 @@ enum MemberRole {
   FOLLOWER
 }
 
+enum ShareLinkType {
+  VIDEO
+  PLAYLIST
+}
+
+enum ShareLinkRole {
+  COLLABORATOR
+  FOLLOWER
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -55,6 +65,7 @@ model Video {
   updatedAt   DateTime     @updatedAt
   dancers VideoDancer[]
   playlists PlaylistVideo[]
+  shareLinks ShareLink[]
 }
 
 model Dancer {
@@ -95,6 +106,7 @@ model User {
   thirdPartyAccounts ThirdPartyAccount[]
   playlists Playlist[]
   playlistMembers PlaylistMember[]
+  shareLinks ShareLink[]
 }
 
 model ThirdPartyAccount {
@@ -121,6 +133,7 @@ model Playlist {
   user User @relation(fields: [userId], references: [id])
   members PlaylistMember[]
   videos PlaylistVideo[]
+  shareLinks ShareLink[]
 }
 
 model PlaylistMember {
@@ -142,4 +155,20 @@ model PlaylistVideo {
   updatedAt DateTime @updatedAt
   playlist Playlist @relation(fields: [playlistId], references: [id])
   video Video @relation(fields: [videoId], references: [id])
+}
+
+model ShareLink {
+  id Int @id @default(autoincrement())
+  publicId String @unique
+  type ShareLinkType
+  userId Int
+  playlistId Int?
+  videoId Int?
+  role ShareLinkRole @default(FOLLOWER)
+  playlist Playlist? @relation(fields: [playlistId], references: [id])
+  video Video? @relation(fields: [videoId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  expiredAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -5,6 +5,7 @@ import { useLoginMutation, useGoogleSignInMutation } from "@/store/slices/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -13,12 +14,14 @@ const LoginPage = () => {
   const [googleSignIn] = useGoogleSignInMutation();
   const router = useRouter();
   const [error, setError] = useState("");
+  const searchParams = useSearchParams();
+  const continueUrl = searchParams.get("continue");
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       await googleSignIn({ access_token: codeResponse.access_token }).unwrap();
 
-      router.push("/");
+      router.push(continueUrl || "/");
     },
     onError: (error) => {
       console.log(error);
@@ -29,7 +32,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       await login({ email, password }).unwrap();
-      router.push("/");
+      router.push(continueUrl || "/");
     } catch (error: any) {
       setError(error?.data?.error);
     }
@@ -111,7 +114,7 @@ const LoginPage = () => {
           </button>
           <p className="text-sm text-[#232323] text-center cursor-pointer">
             Don{`'`}t have an account?{" "}
-            <Link href="/signup" className="text-[#6784F6] underline">
+            <Link href={`/signup${continueUrl ? `?continue=${continueUrl}` : ""}`} className="text-[#6784F6] underline">
               Sign up
             </Link>
           </p>

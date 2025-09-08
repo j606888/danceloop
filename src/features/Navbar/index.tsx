@@ -1,3 +1,5 @@
+"use client";
+
 import { useMeQuery } from "@/store/slices/user";
 import Sidebar from "./Sidebar";
 import SyncVideo from "./SyncVideo";

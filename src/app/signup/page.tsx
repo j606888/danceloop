@@ -6,7 +6,7 @@ import {
   useGoogleSignInMutation,
 } from "@/store/slices/user";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGoogleLogin } from "@react-oauth/google";
 
 const SignupPages = () => {
@@ -17,12 +17,14 @@ const SignupPages = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [googleSignIn] = useGoogleSignInMutation();
+  const searchParams = useSearchParams();
+  const continueUrl = searchParams.get("continue");
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       await googleSignIn({ access_token: codeResponse.access_token }).unwrap();
 
-      router.push("/");
+      router.push(continueUrl || "/");
     },
     onError: (error) => {
       console.log(error);
@@ -34,7 +36,7 @@ const SignupPages = () => {
 
     try {
       await signup({ name, email, password }).unwrap();
-      router.push("/");
+      router.push(continueUrl || "/");
     } catch (error: any) {
       console.log(error);
       setError(error?.data?.error);

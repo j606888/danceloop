@@ -7,6 +7,7 @@ import {
   PlaylistVisibility,
 } from "@/lib/constants";
 import { useCreateUserPlaylistMutation } from "@/store/slices/user/playlists";
+import toast from "react-hot-toast";
 
 const NewPlaylist = () => {
   const [open, setOpen] = useState(false);
@@ -17,8 +18,15 @@ const NewPlaylist = () => {
   const [createUserPlaylist, { isLoading }] = useCreateUserPlaylistMutation();
 
   const handleSubmit = async () => {
-    await createUserPlaylist({ title, visibility });
-    setOpen(false);
+    try {
+      await createUserPlaylist({ title, visibility });
+      toast.success("新增清單成功");
+    } catch (error) {
+      console.log(error);
+      toast.error("新增清單失敗");
+    } finally {
+      setOpen(false);
+    }
   };
 
   return (
