@@ -1,24 +1,42 @@
-"use client";
-
-import { useParams } from "next/navigation";
+import { redirect } from "next/navigation";
 import VideoDetail from "@/features/VideoDetail";
-import { useGetVideoQuery } from "@/store/slices/videos";
-import { PulseLoader } from "react-spinners";
+import prisma from "@/lib/prisma";
+import { decodeAuthToken } from "@/lib/auth";
 
-const VideoPage = () => {
-  const { uid } = useParams();
+const VideoPage = async ({ params }: { params: Promise<{ uid: string }> }) => {
+  const { uid } = await params;
 
-  const { data: video, isLoading } = useGetVideoQuery(uid as string);
+  const video = await prisma.video.findUnique({
+    where: { uid },
+  });
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <PulseLoader size={20} color="#4A81D9" />
-      </div>
+  if (!video) {
+    return redirect("/404");
+  }
+
+  if (video.visibility === "private") {
+    const { userId } = await decodeAuthToken();
+    if (!userId) {
+      return redirect("/404");
+    }
+
+    const playlistVideos = await prisma.playlistVideo.findMany({
+      where: { videoId: video.id },
+    });
+
+    const playlistIds = playlistVideos.map(
+      (playlistVideo) => playlistVideo.playlistId
     );
-  if (!video) return <div>No video found</div>;
 
-  return <VideoDetail videoUid={video.uid} />;
+    const playlistMembers = await prisma.playlistMember.findMany({
+      where: { playlistId: { in: playlistIds }, userId },
+    });
+    if (playlistMembers.length === 0 && video.userId !== userId) {
+      return redirect("/404");
+    }
+  }
+
+  return <VideoDetail video={video} />;
 };
 
 export default VideoPage;
