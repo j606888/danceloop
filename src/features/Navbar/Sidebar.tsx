@@ -117,6 +117,11 @@ const Sidebar = ({ isLogin }: { isLogin: boolean }) => {
                 )}
                 <div className="flex items-center mt-auto gap-3 px-3 rounded-xl text-[#777777] text-xs">
                   <span>Powered by 丁丁</span>
+                  <Link href="/privacy-policy">
+                    <div className="flex items-center gap-3 p-3 rounded-xl text-[#323232] font-medium cursor-pointer">
+                      <span>隱私政策</span>
+                    </div>
+                  </Link>
                 </div>
               </div>
               <X
