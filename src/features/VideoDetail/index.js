@@ -1,11 +1,12 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const CUSTOMER = "customer-ae2phsrffw6ivfgf.cloudflarestream.com";
 
-export default function VideoDetail({ videoUid }) {
+function VideoDetailInner({ videoUid }) {
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
   const router = useRouter();
@@ -39,5 +40,13 @@ export default function VideoDetail({ videoUid }) {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function VideoDetail({ videoUid }) {
+  return (
+    <Suspense fallback={<div className="text-white">Loading...</div>}>
+      <VideoDetailInner videoUid={videoUid} />
+    </Suspense>
   );
 }

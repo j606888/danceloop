@@ -8,7 +8,7 @@ import { decodeAuthToken } from "@/lib/auth";
 
 const PlaylistDetailPage = async ({
   params, searchParams
-}: { params: { publicId: string }; searchParams: { sl: string } }) => {
+}: { params: Promise<{ publicId: string }>; searchParams: Promise<{ sl: string }> }) => {
   const { publicId } = await params;
   const { sl } = await searchParams;
   const { userId } = await decodeAuthToken();

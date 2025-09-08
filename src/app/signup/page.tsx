@@ -5,11 +5,11 @@ import {
   useSignupMutation,
   useGoogleSignInMutation,
 } from "@/store/slices/user";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGoogleLogin } from "@react-oauth/google";
 
-const SignupPages = () => {
+const SignupPagesInner = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -134,4 +134,10 @@ const SignupPages = () => {
   );
 };
 
-export default SignupPages;
+export default function SignupPages() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignupPagesInner />
+    </Suspense>
+  );
+}

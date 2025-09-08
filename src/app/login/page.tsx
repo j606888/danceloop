@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useLoginMutation, useGoogleSignInMutation } from "@/store/slices/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useSearchParams } from "next/navigation";
 
-const LoginPage = () => {
+const LoginPageInner = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
@@ -124,4 +124,10 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginPageInner />
+    </Suspense>
+  );
+}
