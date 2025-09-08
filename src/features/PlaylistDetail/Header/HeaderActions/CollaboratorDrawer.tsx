@@ -2,10 +2,9 @@
 
 import Drawer from "@/components/Drawer";
 import { useCreateUserShareLinkMutation } from "@/store/slices/user/shareLink";
-import Snackbar from "@mui/material/Snackbar";
 import { ShareLinkRole, ShareLinkType } from "@prisma/client";
 import { Copy, Check, X } from "lucide-react";
-import { useState } from "react";
+import toast from "react-hot-toast";
 
 const CollaboratorDrawer = ({
   open,
@@ -16,7 +15,6 @@ const CollaboratorDrawer = ({
   onClose: () => void;
   publicId: string;
 }) => {
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [createUserShareLink] = useCreateUserShareLinkMutation();
   
   const handleCopyLink = async () => {
@@ -28,7 +26,7 @@ const CollaboratorDrawer = ({
     }).unwrap();
     const shareLinkPublicId = shareLink.publicId;
     await navigator.clipboard.writeText(`${window.location.origin}/playlists/${publicId}?sl=${shareLinkPublicId}`);
-    setOpenSnackbar(true);
+    toast.success("連結已複製");
     onClose();
   };
 
@@ -93,12 +91,6 @@ const CollaboratorDrawer = ({
           <span>複製連結</span>
         </div>
       </Drawer>
-      <Snackbar
-        open={openSnackbar}
-        onClose={() => setOpenSnackbar(false)}
-        message="連結已複製"
-        autoHideDuration={3000}
-      />
     </>
   );
 };

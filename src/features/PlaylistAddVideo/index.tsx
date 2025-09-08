@@ -9,7 +9,9 @@ import {
 } from "@/components/Searchbar/filterDraft";
 import VideoCard from "@/components/VideoCard";
 import { useAddVideoToPlaylistMutation } from "@/store/slices/user/playlists";
+import VideoListSkeleton from "@/components/skeletons/VideoListSkeleton";
 import Header from "./Header";
+import toast from "react-hot-toast";
 
 const PlaylistAddVideo = ({ publicId }: { publicId: string }) => {
   const [filters, dispatch] = useReducer(
@@ -21,8 +23,14 @@ const PlaylistAddVideo = ({ publicId }: { publicId: string }) => {
   const setField = bindSetField(dispatch);
   const [addVideoToPlaylist] = useAddVideoToPlaylistMutation();
 
-  const handleAddVideoToPlaylist = (videoUid: string) => {
-    addVideoToPlaylist({ publicId, videoUid });
+  const handleAddVideoToPlaylist = async (videoUid: string) => {
+    try {
+      await addVideoToPlaylist({ publicId, videoUid });
+      toast.success("新增成功");
+    } catch (error) {
+      console.log(error);
+      toast.error("新增影片失敗");
+    }
   };
 
   return (
@@ -30,9 +38,11 @@ const PlaylistAddVideo = ({ publicId }: { publicId: string }) => {
       <Header publicId={publicId} setField={setField} filters={filters} />
       <div className="p-2.5">
         {isLoading ? (
-          <div className="flex justify-center items-center h-screen">
-            <BeatLoader size={20} color="#4A81D9" />
-          </div>
+          <>
+            <VideoListSkeleton />
+            <VideoListSkeleton />
+            <VideoListSkeleton />
+          </>
         ) : (
           <>
             {videos?.map((video) => (

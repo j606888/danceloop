@@ -12,6 +12,7 @@ import {
   initialFilterDraft,
 } from "./Searchbar/filterDraft";
 import ActiveFilters from "./ActiveFilters";
+import VideoListSkeleton from "@/components/skeletons/VideoListSkeleton";
 
 const VideoManagement = () => {
   const [filters, dispatch] = useReducer(
@@ -30,9 +31,12 @@ const VideoManagement = () => {
       </div>
       <div className="p-2.5">
         {isLoading ? (
-          <div className="flex justify-center items-center h-screen">
-            <BeatLoader size={20} color="#4A81D9" />
-          </div>
+         <>
+          <VideoListSkeleton />
+          <VideoListSkeleton />
+          <VideoListSkeleton />
+          <VideoListSkeleton />
+         </>
         ) : (
           <div>
             {videos?.map((video: Video) => (

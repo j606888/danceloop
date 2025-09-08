@@ -2,19 +2,36 @@
 
 import Drawer from "@/components/Drawer";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { PLAYLIST_VISIBILITY_OPTIONS } from "@/lib/constants";
+import { PlaylistWithUser } from "@/store/slices/user/playlists";
+import { useUpdateUserPlaylistMutation } from "@/store/slices/user/playlists";
 
+const   EditDrawer = ({ open, onClose, playlist }: { open: boolean, onClose: () => void, playlist: PlaylistWithUser }) => {
+  const [title, setTitle] = useState(playlist.title);
+  const [visibility, setVisibility] = useState(playlist.visibility);
+  const [updateUserPlaylist, { isLoading }] = useUpdateUserPlaylistMutation();
 
-const EditDrawer = ({ open, onClose }: { open: boolean, onClose: () => void }) => {
-  const [title, setTitle] = useState("");
-  const [visibility, setVisibility] = useState("private");
+  const handleSubmit = async () => {
+    try {
+      await updateUserPlaylist({ publicId: playlist.publicId, title, visibility });
+      toast.success("更新清單成功");
+    } catch (error) {
+      console.log(error);
+      toast.error("更新清單失敗");
+    } finally {
+      onClose();
+    }
+  };
 
   return (
     <Drawer
         open={open}
         onClose={onClose}
-        title="編輯清單"
-        onSubmit={onClose}
+        title="名稱與權限"
+        onSubmit={handleSubmit}
+        submitText="儲存"
+        isLoading={isLoading}
       >
         <div className="mb-3">
           <label className="block text-[#21212] text-sm font-medium mb-1">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { Providers } from "@/store/provider";
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -27,6 +28,16 @@ export default function RootLayout({
       >
         <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
           <Providers>
+            <Toaster position="bottom-center" 
+              toastOptions={{
+                success: {
+                  iconTheme: {
+                    primary: "#6784F6",
+                    secondary: "#ffffff",
+                  }
+                }
+              }}
+            />
             {children}
           </Providers>
         </GoogleOAuthProvider>

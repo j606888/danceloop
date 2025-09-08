@@ -11,10 +11,10 @@ const TABS = [
     label: "追蹤清單",
     value: "followed",
   },
-  {
-    label: "探索",
-    value: "explore",
-  },
+  // {
+  //   label: "探索",
+  //   value: "explore",
+  // },
 ];
 
 const PlaylistHeader = ({

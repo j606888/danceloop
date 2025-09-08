@@ -39,6 +39,14 @@ const userPlaylistsSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["Playlist"],
     }),
+    updateUserPlaylist: builder.mutation<void, { publicId: string; title: string; visibility: PlaylistVisibility }>({
+      query: ({ publicId, title, visibility }) => ({
+        url: `/user/playlists/${publicId}`,
+        method: "PATCH",
+        body: { title, visibility },
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
     getUserPlaylist: builder.query<
       PlaylistWithUser,
       { publicId: string }
@@ -106,4 +114,5 @@ export const {
   useUnfollowPlaylistMutation,
   useUpdatePlaylistMemberRoleMutation,
   useRemovePlaylistMemberMutation,
+  useUpdateUserPlaylistMutation,
 } = userPlaylistsSlice;
