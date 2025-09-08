@@ -137,11 +137,13 @@ const HeaderActions = ({ playlist, publicId }: { playlist: PlaylistWithUser, pub
         </Menu>
       </div>
       <ShareDrawer
+        publicId={publicId}
         open={openDrawer === "share"}
         onClose={() => setOpenDrawer(null)}
         onInviteCollaborator={() => handleOpenDrawer("collaborate")}
       />
       <CollaboratorDrawer
+        publicId={publicId}
         open={openDrawer === "collaborate"}
         onClose={() => setOpenDrawer(null)}
       />

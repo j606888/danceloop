@@ -1,21 +1,33 @@
 "use client";
 
 import Drawer from "@/components/Drawer";
+import { useCreateUserShareLinkMutation } from "@/store/slices/user/shareLink";
 import Snackbar from "@mui/material/Snackbar";
+import { ShareLinkRole, ShareLinkType } from "@prisma/client";
 import { Copy, Check, X } from "lucide-react";
 import { useState } from "react";
 
 const CollaboratorDrawer = ({
   open,
   onClose,
+  publicId,
 }: {
   open: boolean;
   onClose: () => void;
+  publicId: string;
 }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-
+  const [createUserShareLink] = useCreateUserShareLinkMutation();
+  
   const handleCopyLink = async () => {
     // await navigator.clipboard.writeText(window.location.href);
+    const shareLink = await createUserShareLink({
+      type: ShareLinkType.PLAYLIST,
+      playlistPublicId: publicId,
+      role: ShareLinkRole.COLLABORATOR,
+    }).unwrap();
+    const shareLinkPublicId = shareLink.publicId;
+    await navigator.clipboard.writeText(`${window.location.origin}/playlists/${publicId}?sl=${shareLinkPublicId}`);
     setOpenSnackbar(true);
     onClose();
   };
