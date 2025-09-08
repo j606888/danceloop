@@ -78,6 +78,21 @@ const userPlaylistsSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["Playlist"],
     }),
+    updatePlaylistMemberRole: builder.mutation<void, { publicId: string; userId: string; role: MemberRole }>({
+      query: ({ publicId, userId, role }) => ({
+        url: `/user/playlists/${publicId}/members/${userId}`,
+        method: "PATCH",
+        body: { role },
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
+    removePlaylistMember: builder.mutation<void, { publicId: string; userId: string }>({
+      query: ({ publicId, userId }) => ({
+        url: `/user/playlists/${publicId}/members/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Playlist"],
+    }),
   }),
 });
 
@@ -89,4 +104,6 @@ export const {
   useGetUserPlaylistVideosQuery,
   useFollowPlaylistMutation,
   useUnfollowPlaylistMutation,
+  useUpdatePlaylistMemberRoleMutation,
+  useRemovePlaylistMemberMutation,
 } = userPlaylistsSlice;

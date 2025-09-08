@@ -1,14 +1,17 @@
 import { PlaylistWithUser, Member } from "@/store/slices/user/playlists";
 import { MemberRole } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const Collaborators = ({ playlist }: { playlist: PlaylistWithUser }) => {
+  const router = useRouter();
+
   const members = playlist.members
   const collaborators = members.filter((member) => member.role === MemberRole.COLLABORATOR)
   const owner = members.find((member) => member.role === MemberRole.OWNER)
   const displayText = generateDisplayText(owner!, collaborators)
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 cursor-pointer"  onClick={() => router.push(`/playlists/${playlist.publicId}/members`)}>
       <div className="flex items-center -space-x-2.5">
         <Avatar name={owner?.name || ""} />
         {collaborators.map((collaborator) => (
