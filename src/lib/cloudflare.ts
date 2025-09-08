@@ -36,3 +36,29 @@ export async function getVideoDetail(uid: string) {
   const { result } = await response.json();
   return result
 }
+
+export async function deleteVideo(uid: string) {
+  const apiPath = `${CLOUDFLARE_API_PREFIX}/${uid}`
+
+  const response = await fetch(apiPath, {
+    headers: {
+      Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
+    },
+    method: "DELETE",
+  });
+
+  return true
+}
+
+export async function getAllVideos() {
+  const apiPath = `${CLOUDFLARE_API_PREFIX}`
+
+  const response = await fetch(apiPath, {
+    headers: {
+      Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
+    },
+  });
+
+  const { result } = await response.json();
+  return result
+}
