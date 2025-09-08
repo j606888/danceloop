@@ -12,7 +12,7 @@ const Header = ({ playlist, videoCount }: { playlist: PlaylistWithUser, videoCou
         <h2 className="text-lg font-medium text-[#343434]">{playlist.title}</h2>
         <div className="flex items-center gap-3">
           <Collaborators playlist={playlist}/>
-          <Followers />
+          <Followers playlist={playlist} />
         </div>
         <MetaInfo playlist={playlist} videoCount={videoCount}/>
       </div>

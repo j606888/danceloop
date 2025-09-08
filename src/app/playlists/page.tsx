@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Navbar from "@/features/Navbar";
 import PlaylistList from "@/features/PlaylistList";

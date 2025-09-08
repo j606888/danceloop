@@ -3,15 +3,16 @@ import { MemberRole, Playlist } from "@prisma/client";
 import { PlaylistVisibility } from "@/lib/constants";
 import { Video } from "../videos";
 
+export type Member = {
+  userId: number;
+  name: string;
+  role: MemberRole;
+}
 export type PlaylistWithUser = Playlist & {
   user: {
     name: string;
   };
-  members: {
-    userId: number;
-    name: string;
-    role: MemberRole;
-  }[]
+  members: Member[]
   videoCount: number;
 };
 

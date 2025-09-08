@@ -24,6 +24,7 @@ const HeaderActions = ({ playlist, publicId }: { playlist: PlaylistWithUser, pub
   const [openDrawer, setOpenDrawer] = useState<
     "share" | "collaborate" | "edit" | null
   >(null);
+  const isLoggedIn = me.data?.id;
   const open = Boolean(anchorEl);
   const isFollowed = playlist.members.some((member) => member.userId === me.data?.id && member.role === MemberRole.FOLLOWER);
   const [followPlaylist] = useFollowPlaylistMutation();
@@ -57,6 +58,10 @@ const HeaderActions = ({ playlist, publicId }: { playlist: PlaylistWithUser, pub
   }
 
   async function handleFollowPlaylist() {
+    if (!isLoggedIn) {
+      router.push("/login");
+      return;
+    }
     await followPlaylist({ publicId });
     setOpenSnackbar(true);
     setSnackbarMessage("已追蹤");

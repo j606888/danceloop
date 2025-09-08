@@ -1,14 +1,21 @@
-const Followers = () => {
+import { PlaylistWithUser } from "@/store/slices/user/playlists";
+import { MemberRole } from "@prisma/client";
+
+const Followers = ({ playlist }: { playlist: PlaylistWithUser }) => {
+  const followers = playlist.members.filter((member) => member.role === MemberRole.FOLLOWER)
+
+  if (followers.length === 0) {
+    return null;
+  }
+
   return (
     <div className="flex items-center gap-1">
       <div className="flex items-center -space-x-2.5">
-        <Avatar name="G" />
-        <Avatar name="S" />
-        <Avatar name="A" />
-        <Avatar name="周" />
-        <Avatar name="D" />
+        {followers.map((follower) => (
+          <Avatar key={follower.userId} name={follower.name} />
+        ))}
       </div>
-      <span className="text-sm text-[#434343]">5 位追蹤者</span>
+      <span className="text-sm text-[#434343]">{followers.length} 位追蹤者</span>
     </div>
   );
 };
