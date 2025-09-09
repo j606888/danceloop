@@ -1,7 +1,7 @@
 import VisibilityChip from "@/components/VisibilityChip";
 import { Video } from "@/store/slices/videos";
 import { format } from "date-fns";
-import { Visibility } from "@/lib/constants";
+import { VISIBILITIES, Visibility } from "@/lib/constants";
 
 const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
 
@@ -12,7 +12,7 @@ const DateAndVisibility = ({ video, showVisibility = false }: { video: Video, sh
         {format(new Date(video.recordedAt), "yyyy/MM/dd ")} (
         {WEEKDAYS[new Date(video.recordedAt).getDay()]})
       </p>
-      {showVisibility && (
+      {showVisibility && video.visibility !== VISIBILITIES.PUBLIC && (
         <VisibilityChip visibility={video.visibility as Visibility} />
       )}
     </div>
