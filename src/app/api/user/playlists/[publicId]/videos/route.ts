@@ -67,6 +67,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ publ
 
   const videos = await prisma.playlistVideo.findMany({
     where: { playlistId: playlist.id },
+    orderBy: { video: { recordedAt: "desc" } },
     include: {
       video: {
         include: {
