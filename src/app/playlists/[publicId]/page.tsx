@@ -1,57 +1,95 @@
-
 import PlaylistDetail from "@/features/PlaylistDetail";
 import Navbar from "@/features/Navbar";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { ShareLink, ShareLinkRole, ShareLinkType } from "@prisma/client";
+import {
+  ShareLinkRole,
+  ShareLinkType,
+  PlaylistVisibility,
+} from "@prisma/client";
 import { decodeAuthToken } from "@/lib/auth";
 
 const PlaylistDetailPage = async ({
-  params, searchParams
-}: { params: Promise<{ publicId: string }>; searchParams: Promise<{ sl: string }> }) => {
+  params,
+  searchParams,
+}: {
+  params: Promise<{ publicId: string }>;
+  searchParams: Promise<{ sl: string }>;
+}) => {
   const { publicId } = await params;
   const { sl } = await searchParams;
   const { userId } = await decodeAuthToken();
 
-  let shareLink: ShareLink | null = null;
+  const playlist = await queryPlaylist(publicId);
+  if (!playlist) {
+    return redirect("/404");
+  }
 
-  if (sl) {
-    shareLink = await prisma.shareLink.findUnique({
-      where: { publicId: sl, type: ShareLinkType.PLAYLIST },
-    });
+  const shareLink = await queryShareLink(sl, playlist.id);
 
-    if (!shareLink) {
-      return redirect("/404");
+  if (shareLink && shareLink.role === ShareLinkRole.COLLABORATOR) {
+    if (!userId) {
+      return redirect(`/login?continue=/playlists/${publicId}?sl=${sl}`);
     }
 
-    if (shareLink.role === ShareLinkRole.COLLABORATOR) {
+    await addUserToPlaylist(playlist.id, userId);
+  }
+
+  if (playlist.visibility === PlaylistVisibility.PRIVATE) {
+    if (!shareLink) {
       if (!userId) {
-        return redirect(`/login?continue=/playlists/${publicId}?sl=${sl}`);
-      }
-
-      const playlist = await prisma.playlist.findUnique({
-        where: { publicId },
-      });
-
-      if (!playlist) {
         return redirect("/404");
       }
 
-      const existing = await prisma.playlistMember.findFirst({
-        where: { playlistId: playlist.id, userId, role: ShareLinkRole.COLLABORATOR },
-      });
-      if (!existing) {
-        await prisma.playlistMember.create({
-          data: { playlistId: playlist.id, userId, role: ShareLinkRole.COLLABORATOR },
-        });
+      const playlistMember = await queryPlaylistMember(playlist.id, userId);
+      if (!playlistMember) {
+        return redirect("/404");
       }
     }
   }
-  
-  return <>
-    <Navbar />
-    <PlaylistDetail publicId={publicId as string} />
-  </>;
+
+  return (
+    <>
+      <Navbar />
+      <PlaylistDetail publicId={publicId as string} />
+    </>
+  );
 };
+
+async function queryPlaylist(publicId: string) {
+  return await prisma.playlist.findUnique({
+    where: { publicId },
+  });
+}
+
+async function queryShareLink(sl: string, playlistId: number) {
+  return await prisma.shareLink.findFirst({
+    where: {
+      publicId: sl,
+      type: ShareLinkType.PLAYLIST,
+      playlistId,
+      expiredAt: {
+        gt: new Date(),
+      },
+    },
+  });
+}
+
+async function addUserToPlaylist(playlistId: number, userId: number) {
+  const existing = await prisma.playlistMember.findFirst({
+    where: { playlistId, userId, role: ShareLinkRole.COLLABORATOR },
+  });
+  if (existing) return;
+
+  await prisma.playlistMember.create({
+    data: { playlistId, userId, role: ShareLinkRole.COLLABORATOR },
+  });
+}
+
+async function queryPlaylistMember(playlistId: number, userId: number) {
+  return await prisma.playlistMember.findFirst({
+    where: { playlistId, userId },
+  });
+}
 
 export default PlaylistDetailPage;

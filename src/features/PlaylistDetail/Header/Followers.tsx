@@ -11,7 +11,7 @@ const Followers = ({ playlist }: { playlist: PlaylistWithUser }) => {
   }
 
   return (
-    <div className="flex items-center gap-1 cursor-pointer" onClick={() => router.push(`/playlists/${playlist.publicId}/followers`)}>
+    <div className="flex items-center gap-1 cursor-pointer" onClick={() => router.push(`/playlists/${playlist.publicId}/members`)}>
       <div className="flex items-center -space-x-2.5">
         {followers.map((follower) => (
           <Avatar key={follower.userId} name={follower.name} />

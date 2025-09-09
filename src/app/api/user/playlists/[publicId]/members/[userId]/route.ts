@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { decodeAuthToken } from "@/lib/auth";
 import { Playlist } from "@prisma/client";
+import { HttpError, raise } from "@/lib/httpError";
 
 export async function PATCH(
   request: Request,
@@ -10,27 +11,26 @@ export async function PATCH(
   const { publicId, userId } = await params;
   const { role } = await request.json();
 
-  const playlist = await prisma.playlist.findUnique({
-    where: { publicId },
-  });
-  if (!playlist) {
-    return NextResponse.json({ error: "Playlist not found" }, { status: 400 });
-  }
-  validateOwner(playlist);
-  const playlistMember = await prisma.playlistMember.findFirst({
-    where: { playlistId: playlist.id, userId: parseInt(userId) },
-  });
-  if (!playlistMember) {
+  try {
+    const playlist = await queryPlaylist(publicId);
+    await validateOwner(playlist);
+    const playlistMember = await queryPlaylistMember(
+      playlist.id,
+      parseInt(userId)
+    );
+    await prisma.playlistMember.update({
+      where: { id: playlistMember.id },
+      data: { role },
+    });
+  } catch (err) {
+    if (err instanceof HttpError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
     return NextResponse.json(
-      { error: "Playlist member not found" },
-      { status: 400 }
+      { error: "Internal server error" },
+      { status: 500 }
     );
   }
-
-  await prisma.playlistMember.update({
-    where: { id: playlistMember.id },
-    data: { role },
-  });
 
   return NextResponse.json({ success: true });
 }
@@ -41,40 +41,57 @@ export async function DELETE(
 ) {
   const { publicId, userId } = await params;
 
-  const playlist = await prisma.playlist.findUnique({
-    where: { publicId },
-  });
-  if (!playlist) {
-    return NextResponse.json({ error: "Playlist not found" }, { status: 400 });
-  }
-  validateOwner(playlist);
-  const playlistMember = await prisma.playlistMember.findFirst({
-    where: { playlistId: playlist.id, userId: parseInt(userId) },
-  });
-  if (!playlistMember) {
+  try {
+    const playlist = await queryPlaylist(publicId);
+    await validateOwner(playlist);
+    const playlistMember = await queryPlaylistMember(
+      playlist.id,
+      parseInt(userId)
+    );
+    await prisma.playlistMember.delete({
+      where: { id: playlistMember.id },
+    });
+  } catch (err) {
+    if (err instanceof HttpError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+    console.error(err);
     return NextResponse.json(
-      { error: "Playlist member not found" },
-      { status: 400 }
+      { error: "Internal server error" },
+      { status: 500 }
     );
   }
-
-  await prisma.playlistMember.delete({
-    where: { id: playlistMember.id },
-  });
 
   return NextResponse.json({ success: true });
 }
 
-async function validateOwner(playlist: Playlist) {
+async function validateOwner(playlist: Playlist): Promise<void> {
   const { userId: ownerId } = await decodeAuthToken();
   if (!ownerId) {
-    return NextResponse.json({ error: "User not found" }, { status: 400 });
+    raise(400, "User not found");
   }
 
   if (playlist.userId !== ownerId) {
-    return NextResponse.json(
-      { error: "You are not the owner of the playlist" },
-      { status: 400 }
-    );
+    raise(400, "You are not the owner of the playlist");
   }
+}
+
+async function queryPlaylist(publicId: string) {
+  const playlist = await prisma.playlist.findUnique({
+    where: { publicId },
+  });
+  if (!playlist) {
+    raise(400, "Playlist not found");
+  }
+  return playlist;
+}
+
+async function queryPlaylistMember(playlistId: number, userId: number) {
+  const playlistMember = await prisma.playlistMember.findFirst({
+    where: { playlistId, userId },
+  });
+  if (!playlistMember) {
+    raise(400, "Playlist member not found");
+  }
+  return playlistMember;
 }

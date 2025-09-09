@@ -42,6 +42,10 @@ const HeaderActions = ({
   const isLoggedIn = me.data?.id;
   const open = Boolean(anchorEl);
   const isOwner = playlist.userId === me.data?.id;
+  const isCollaborator = playlist.members.some(
+    (member) =>
+      member.userId === me.data?.id && member.role === MemberRole.COLLABORATOR
+  );
   const isFollowed = playlist.members.some(
     (member) =>
       member.userId === me.data?.id && member.role === MemberRole.FOLLOWER
@@ -102,7 +106,7 @@ const HeaderActions = ({
           <ChevronLeft className="w-6 h-6" />
         </div>
         <div className="flex items-center">
-          {!isOwner && (
+          {!isOwner && !isCollaborator && (
             <button
               className={`text-sm text-[#444444] border-1  rounded-lg px-2 py-1 mr-3 ${
                 isFollowed
@@ -114,6 +118,11 @@ const HeaderActions = ({
               }
             >
               {isFollowed ? "追蹤中" : "追蹤"}
+            </button>
+          )}
+          {isCollaborator && (
+            <button className="text-sm border-1  rounded-lg px-2 py-1 mr-3 bg-[#444444] text-white ">
+              協作者
             </button>
           )}
           <div
@@ -141,13 +150,15 @@ const HeaderActions = ({
             </ListItemIcon>
             <ListItemText>分享清單</ListItemText>
           </MenuItem>
+          {(isOwner || isCollaborator) && (
           <MenuItem onClick={handleAddToPlaylist}>
             <ListItemIcon>
               <CirclePlus className="w-5 h-5" />
             </ListItemIcon>
             <ListItemText>新增至這個清單</ListItemText>
           </MenuItem>
-          {!isOwner && (
+          )}
+          {!isOwner && !isCollaborator && !isFollowed && (
             <MenuItem onClick={handleAddToPlaylist}>
               <ListItemIcon>
                 <CirclePlus className="w-5 h-5" />

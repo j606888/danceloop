@@ -27,7 +27,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.23.12",
-    "hls.js": "^1.6.10",
+    "hls.js": "^1.6.11",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.542.0",
     "nanoid": "^5.1.5",

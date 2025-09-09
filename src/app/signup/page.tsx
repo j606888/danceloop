@@ -124,7 +124,7 @@ const SignupPagesInner = () => {
           </button>
           <p className="text-sm text-[#232323] text-center cursor-pointer">
             Already have an account?{" "}
-            <Link href="/login" className="text-[#6784F6] underline">
+            <Link href={`/login${continueUrl ? `?continue=${continueUrl}` : ""}`} className="text-[#6784F6] underline">
               Login
             </Link>
           </p>

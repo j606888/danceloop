@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
   if (type === "mine") {
     playlistMembers = await prisma.playlistMember.findMany({
-      where: { userId, role: MemberRole.OWNER },
+      where: { userId, role: { in: [MemberRole.OWNER, MemberRole.COLLABORATOR] } },
     });
   } else if (type === "followed") {
     playlistMembers = await prisma.playlistMember.findMany({
