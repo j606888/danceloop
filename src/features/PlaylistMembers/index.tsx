@@ -11,8 +11,11 @@ import { Ellipsis, ArrowBigDownDash, ArrowBigUpDash, Ban } from "lucide-react";
 import Header from "./Header";
 import { useState } from "react";
 import { ListItemText, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { useMeQuery } from "@/store/slices/user";
+import { Playlist, User } from "@prisma/client";
 
 const PlaylistMembers = ({ publicId }: { publicId: string }) => {
+  const { data: me } = useMeQuery();
   const { data: playlist, isLoading } = useGetUserPlaylistQuery({ publicId });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
@@ -74,6 +77,8 @@ const PlaylistMembers = ({ publicId }: { publicId: string }) => {
               key={collaborator.userId}
               member={collaborator}
               handleClick={handleClick}
+              me={me}
+              playlist={playlist}
             />
           ))
         )}
@@ -92,6 +97,8 @@ const PlaylistMembers = ({ publicId }: { publicId: string }) => {
               key={follower.userId}
               member={follower}
               handleClick={handleClick}
+              me={me}
+              playlist={playlist}
             />
           ))
         )}
@@ -149,9 +156,13 @@ const Skeleton = () => {
 const UserIcon = ({
   member,
   handleClick,
+  me,
+  playlist,
 }: {
   member: Member;
   handleClick?: (member: Member, event: React.MouseEvent<SVGElement>) => void;
+  me?: User;
+  playlist?: Playlist;
 }) => {
   return (
     <div className="flex items-center gap-3 px-3 py-2">
@@ -159,7 +170,7 @@ const UserIcon = ({
         {member.name.charAt(0)}
       </div>
       <span className="flex-1">{member.name}</span>
-      {handleClick && (
+      {handleClick && playlist?.userId === me?.id && (
         <Ellipsis
           className="w-6 h-6 text-[#454545]"
           onClick={(event) => handleClick(member, event)}

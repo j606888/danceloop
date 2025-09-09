@@ -1,10 +1,9 @@
-import { Plus } from "lucide-react";
 import { Tab } from ".";
 import NewPlaylist from "./NewPlaylist";
 
 const TABS = [
   {
-    label: "由我建立",
+    label: "我的清單",
     value: "mine",
   },
   {

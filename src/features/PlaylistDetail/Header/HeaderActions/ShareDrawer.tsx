@@ -5,6 +5,7 @@ import { Copy, UserPlus } from "lucide-react";
 import { useCreateUserShareLinkMutation } from "@/store/slices/user/shareLink";
 import { ShareLinkRole, ShareLinkType } from "@prisma/client";
 import toast from "react-hot-toast";
+import { useState, useEffect, useCallback } from "react";
 
 const ShareDrawer = ({
   publicId,
@@ -17,22 +18,33 @@ const ShareDrawer = ({
   onClose: () => void;
   onInviteCollaborator: () => void;
 }) => {
+  const [shareLink, setShareLink] = useState<string>("");
   const [createUserShareLink] = useCreateUserShareLinkMutation();
 
   const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(shareLink);
+    toast.success("連結已複製");
+    onClose();
+  };
+
+  const retrieveShareLink = useCallback(async () => {
     const shareLink = await createUserShareLink({
       type: ShareLinkType.PLAYLIST,
       playlistPublicId: publicId,
       role: ShareLinkRole.FOLLOWER,
     }).unwrap();
     const shareLinkPublicId = shareLink.publicId;
-    await navigator.clipboard.writeText(
+    setShareLink(
       `${window.location.origin}/playlists/${publicId}?sl=${shareLinkPublicId}`
     );
+  }, [publicId, createUserShareLink]);
 
-    toast.success("連結已複製");
-    onClose();
-  };
+  useEffect(() => {
+    if (open && !shareLink) {
+      console.log("retrieveShareLink");
+      retrieveShareLink();
+    }
+  }, [open, retrieveShareLink, shareLink]);
 
   return (
     <>
