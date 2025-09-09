@@ -37,7 +37,7 @@ const PlaylistDetail = ({ publicId }: { publicId: string }) => {
             <div className="p-2">
               {videos?.result?.map((video) => (
                 <div className="flex" key={video.id}>
-                  <VideoCard key={video.id} video={video} from={from} />
+                  <VideoCard key={video.id} video={video} from={from} showVisibility />
                 </div>
               ))}
             </div>
