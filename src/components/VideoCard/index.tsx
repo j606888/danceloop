@@ -1,34 +1,36 @@
 import { Video } from "@/store/slices/videos";
-import { DancerBadge } from "@/components/GendarItem";
 import PreviewImage from "./PreviewImage";
 import DateAndVisibility from "./DateAndVisibility";
 import SecondaryInfo from "./SecondaryInfo";
+// import { EllipsisVertical } from 'lucide-react';
+import { PlayCircle } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 const VideoCard = ({
   video,
-  showVisibility = false,
   from,
 }: {
   video: Video;
-  showVisibility?: boolean;
   from?: string;
 }) => {
-
+  const router = useRouter();
+  const onPlay = () => {
+    router.push(`/video/${video.uid}?from=${from ?? ""}`);
+  };
   return (
-    <div className="flex flex-1 gap-2 py-2 border-b border-gray-200 w-[calc(100%-20px-92px-8px-8px)]">
-      <PreviewImage video={video} from={from} />
-      <div className="flex flex-col justify-between flex-1 w-[calc(100%-20px-92px-8px-8px)]">
-        <div className="relative flex flex-col gap-1 p-1">
-          <DateAndVisibility video={video} showVisibility={showVisibility} />
-          <div>
-            <h4 className="truncate text-[15px] text-[#212121]">
-              {video.title}
-            </h4>
-            <SecondaryInfo video={video} />
-            <div className="flex items-center gap-2 mt-2">
-              {video?.dancers.map((dancer) => (
-                <DancerBadge key={dancer.id} dancer={dancer} size="sm" />
-              ))}
+    <div className="flex flex-1 gap-2 w-[calc(100%-20px-92px-8px-8px)]">
+      <PreviewImage video={video} from={from} onClick={onPlay} />
+      <div className="flex flex-col justify-between flex-1 w-[calc(100%-20px-92px-8px-8px)] border-b border-gray-200">
+        <div className="relative flex flex-col gap-1 py-1 h-full">
+          <h4 className="line-clamp-2 text-[15px] text-[#212121] leading-[1.2] ">
+            {video.title}
+          </h4>
+          <SecondaryInfo video={video} dancers={video?.dancers}/>
+          <div className="flex-1 flex items-end justify-between">
+            <DateAndVisibility video={video} />
+            <div className="flex items-center gap-1 pr-2">
+              {/* <EllipsisVertical className="w-[28px] h-[28px] text-[#333333]" /> */}
+              <PlayCircle sx={{ fontSize: 28 }} className="text-[#333333]" onClick={onPlay} />
             </div>
           </div>
         </div>

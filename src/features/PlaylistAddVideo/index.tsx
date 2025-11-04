@@ -44,14 +44,14 @@ const PlaylistAddVideo = ({ publicId }: { publicId: string }) => {
             <VideoListSkeleton />
           </>
         ) : (
-          <>
+          <div className="flex flex-col gap-1">
             {videos?.map((video) => (
               <div key={video.id} className="flex items-center gap-2">
                 <CirclePlus className="text-[#444444]" onClick={() => handleAddVideoToPlaylist(video.uid)} />
                 <VideoCard video={video} />
               </div>
             ))}
-          </>
+          </div>
         )}
       </div>
     </>

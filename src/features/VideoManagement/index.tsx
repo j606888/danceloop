@@ -38,7 +38,7 @@ const VideoManagement = () => {
           <VideoListSkeleton />
          </>
         ) : (
-          <div>
+          <div className="flex flex-col gap-1">
             {videos?.map((video: Video) => (
               <VideoCard key={video.id} video={video} />
             ))}

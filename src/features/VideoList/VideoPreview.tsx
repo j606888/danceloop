@@ -35,7 +35,7 @@ const VideoPreview = ({
 
   return (
     <div
-      className="relative flex gap-1 px-2 w-full"
+      className="relative flex gap-2 px-2 w-full"
       onClick={() => router.push(`/video/${video.uid}`)}
     >
       <VideoCard video={video} />

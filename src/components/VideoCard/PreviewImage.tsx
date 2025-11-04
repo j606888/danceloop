@@ -1,31 +1,28 @@
 import { Video } from "@/store/slices/videos";
 import { format } from "date-fns";
-import Link from "next/link";
 
-const PreviewImage = ({ video, from }: { video: Video; from?: string }) => {
+const PreviewImage = ({
+  video,
+  onClick,
+}: {
+  video: Video;
+  from?: string;
+  onClick?: () => void;
+}) => {
   const duration = format(video.duration * 1000, "m:ss");
   return (
     <div
-      className={`relative flex items-center justify-center flex-shrink-0 w-[92px] h-[120px] bg-gray-200 ${
+      className={`relative flex items-center justify-center flex-shrink-0 w-[92px] h-[108px] bg-gray-200 ${
         video.state !== "READY" ? "animate-pulse" : ""
       }`}
+      onClick={onClick}
     >
       {video.state === "READY" ? (
-        <Link
-          href={{
-            pathname: `/video/${video.uid}`,
-            query: {
-              from,
-            },
-          }}
+        <img
+          src={video.thumbnail}
+          alt={video.title}
           className="w-full h-full object-cover"
-        >
-          <img
-            src={video.thumbnail}
-            alt={video.title}
-            className="w-full h-full object-cover"
-          />
-        </Link>
+        />
       ) : (
         <p className="text-xs text-center m-1 text-gray-500">{video.state}</p>
       )}
