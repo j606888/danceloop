@@ -9,6 +9,7 @@ import {
   initialFilterDraft,
 } from "./Searchbar/filterDraft";
 import { PulseLoader } from "react-spinners";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 const VideoList = () => {
   const [filters, dispatch] = useReducer(
@@ -18,6 +19,7 @@ const VideoList = () => {
   const { data: videos, isLoading } = useGetVideosQuery(filters);
   const setField = bindSetField(dispatch);
   const [viewType, setViewType] = useState("list");
+  useScrollRestoration("public-video-list");
 
   if (isLoading) {
     return (
@@ -37,7 +39,7 @@ const VideoList = () => {
         className={`relative ${
           viewType === "grid"
             ? "grid grid-cols-3 gap-[3px]"
-            : "py-1"
+            : "py-1 flex flex-col gap-1"
         }`}
       >
         {videos?.result?.map((video) => (
