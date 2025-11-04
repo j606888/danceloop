@@ -10,6 +10,7 @@ import VideoCard from "@/components/VideoCard";
 import PlaylistDetailSkeleton from "./PlaylistDetailSkeleton";
 import VideoListSkeleton from "@/components/skeletons/VideoListSkeleton";
 import useMember from "@/hooks/useMember";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 const PlaylistDetail = ({ publicId }: { publicId: string }) => {
   const { data: playlist, isLoading } = useGetUserPlaylistQuery({ publicId });
@@ -17,6 +18,7 @@ const PlaylistDetail = ({ publicId }: { publicId: string }) => {
   const { data: videos, isLoading: isVideosLoading } =
     useGetUserPlaylistVideosQuery({ publicId });
   const from = `/playlists/${publicId}`;
+  useScrollRestoration("playlist-detail");
 
   return (
     <>
@@ -34,10 +36,10 @@ const PlaylistDetail = ({ publicId }: { publicId: string }) => {
       ) : (
         <div>
           {videos?.result?.length && videos?.result?.length > 0 ? (
-            <div className="p-2">
+            <div className="flex flex-col gap-1 p-2">
               {videos?.result?.map((video) => (
                 <div className="flex" key={video.id}>
-                  <VideoCard key={video.id} video={video} from={from} showVisibility />
+                  <VideoCard key={video.id} video={video} from={from} />
                 </div>
               ))}
             </div>
