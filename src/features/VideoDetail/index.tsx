@@ -14,9 +14,9 @@ export default function VideoDetailInner({ video }: { video: Video }) {
 
   function handleBack() {
     if (from) {
-      router.push(from);
+      router.replace(from)
     } else {
-      router.push("/");
+      router.replace("/");
     }
   }
 
