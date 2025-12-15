@@ -6,9 +6,7 @@ import RadioGroup from "./RadioGroup";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import AppsIcon from "@mui/icons-material/Apps";
 import DancersInput from "./DancersInput";
-
-const DANCE_STYLES = ["Bachata", "Salsa", "Zouk"];
-const RECORD_TYPES = ["Party", "Course", "Workshop", "Other"];
+import { DANCE_STYLES, RECORD_TYPES } from "@/lib/constants";
 
 const VideoFilter = ({
   filters,
@@ -74,13 +72,13 @@ const VideoFilter = ({
           />
           <RadioGroup
             label="Dance Style"
-            options={DANCE_STYLES}
+            options={DANCE_STYLES.map((style) => style.label)}
             value={filters.danceStyle}
             onChange={(value) => setFilters({ ...filters, danceStyle: value })}
           />
           <RadioGroup
             label="Record Type"
-            options={RECORD_TYPES}
+            options={RECORD_TYPES.map((type) => type.label)}
             value={filters.recordType}
             onChange={(value) => setFilters({ ...filters, recordType: value })}
           />

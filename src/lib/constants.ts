@@ -1,4 +1,4 @@
-export type DanceStyle = "bachata" | "salsa" | "zouk" | "kizomba";
+export type DanceStyle = "bachata" | "salsa" | "zouk" | "kizomba" | "lambada" | "hustle";
 export type RecordType = "party" | "course" | "workshop" | "other";
 export type Visibility = "private" | "unlisted" | "public";
 export type PlaylistVisibility = "PRIVATE" | "UNLISTED" | "PUBLIC";
@@ -43,6 +43,14 @@ export const DANCE_STYLES = [
   {
     label: 'Kizomba',
     value: 'kizomba'
+  },
+  {
+    label: 'Lambada',
+    value: 'lambada',
+  },
+  {
+    label: 'Hustle',
+    value: 'hustle',
   }
 ]
 

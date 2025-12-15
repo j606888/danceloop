@@ -10,11 +10,9 @@ import { TextField, Button } from "@mui/material";
 import MultiSelect from "@/components/MultiSelect";
 import Select from "@/components/Select";
 import DateTimePicker from "@/components/DateTimePicker";
+import { DANCE_STYLES, RECORD_TYPES } from "@/lib/constants";
 
 const CUSTOMER = "customer-ae2phsrffw6ivfgf.cloudflarestream.com";
-
-const DANCE_STYLES = ["Bachata", "Salsa", "Zouk"];
-const RECORD_TYPES = ["Party", "Workshop", "Course", "Practice"];
 const LOCATIONS = ["沙野", "台南文創園區", "Salsa 6", "Social Hub", "Banana"];
 
 const AdminVideoEdit = () => {
@@ -88,7 +86,7 @@ const AdminVideoEdit = () => {
           />
           <Select
             label="Dance Style"
-            options={DANCE_STYLES}
+            options={DANCE_STYLES.map((style) => style.label)}
             value={danceStyle}
             onChange={(newValue) => setDanceStyle(newValue)}
           />
@@ -100,7 +98,7 @@ const AdminVideoEdit = () => {
           />
           <Select
             label="類型"
-            options={RECORD_TYPES}
+            options={RECORD_TYPES.map((type) => type.label)}
             value={recordType}
             onChange={(newValue) => setRecordType(newValue)}
           />
